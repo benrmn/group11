@@ -1,39 +1,40 @@
-const express = require('express');
+const express = require('express')
 const cors = require('cors');
-const knex = require('knex');
 require('dotenv').config();
 
-const db = knex({
-    client: 'pg',
-    connection: {
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USERNAME,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE,
-    },
+const mysql = require('mysql')
+
+const { Pool, Client } = require("pg");
+
+const pool = new Pool({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE
 });
 
-const app = express();
+// const app = express()
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json()); 
 
-// CORS implemented so that we don't get errors when trying to access the server from a different server location
-app.use(cors());
+// app.use(cors());
+(async () => {
+    const client = await pool.connect();
+    var query = `INSERT INTO "User" ("User_ID", "isAdmin", "isBanned", "Username", "Password", "User_Fname", "User_Lname") VALUES(3, true, false, 'shrek2', 'is', 'best', 'movie')`;
+    client.query(query, (err, res) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        for (let row of res.rows) {
+            console.log(row);
+        }
+        client.end();
+    });
+})();
 
-// GET: Fetch user movies from the database
-app.get('/', (req, res) => {
-    db.select('*')
-        .from('User')
-        .then((data) => {
-            console.log(data);
-            res.json(data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
+// Listen on enviroment port or 5000
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Server running on port ${port}, http://localhost:${port}`));
+//app.listen(port, () => console.log(`Listening on port ${port}`))
