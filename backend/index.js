@@ -4,6 +4,7 @@ const routesHandler = require('./routes/handler');
 require('dotenv').config();
 
 const { Pool, Client } = require("pg");
+//const db = new Pool();
 
 const pool = new Pool({
     host: process.env.DATABASE_HOST,
@@ -15,9 +16,41 @@ const pool = new Pool({
 const app = express()
 
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
+app.use(express.json()); //req.body
+//middleware
 app.use(cors());
+
+pool.connect(function(err) {
+    if (err) {
+        console.error('Database connection failed: ' + err.stack);
+        return;
+    }
+    console.log("Connected to database!");
+    // pool.end();
+});
+
+//create a post
+
+app.post("/posts", async(req,res) => {
+    try {
+        const {post_text} = req.body;
+        const newPost = await pool.query("INSERT INTO Post (Post_Text) VALUES($1)", 
+        [post_text]);
+
+        res.json(newPost);
+    }catch (err) {
+        console.error(err.message);
+    }
+})
+
+app.get("/posts", async(req, res) => {
+    try {
+        const allPosts = await db.query("SELECT * FROM Post");
+        res.json(allPosts.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+})
 
 
 // (async () => {
@@ -39,3 +72,6 @@ app.use(cors());
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Listening on port ${port}`))
+
+
+

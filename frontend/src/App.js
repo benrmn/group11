@@ -3,6 +3,7 @@ import './App.css';
 import Nav from './components/nav';
 import Login from './components/login';
 import Home from './components/home';
+import Post from './components/post';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
