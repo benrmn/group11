@@ -1,14 +1,20 @@
 import React from 'react';
+import {useNavigate } from 'react-router-dom';
 import Post from './post';
 
+
+
 function Home() {
+
+    const navigate = useNavigate();
+
     return (
-        <div>
+        <>
             <p>
-                shrek2 is the best movie
+            "hi yeti"
             </p>
-            <button type="button" className="btn btn-primary">yeti</button>
-        </div>
+        </>
+
     );
 }
 
