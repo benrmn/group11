@@ -10,7 +10,9 @@ function Home() {
 
     return (
         <>
+            <button type="button" className="btn btn-primary" onClick={() => navigate("/login")}>Login</button>
             <button type="button" className="btn btn-primary" onClick={() => navigate("/post")}>Create Post</button>
+            <button type="button" className="btn btn-primary" onClick={() => navigate("/priv_genre")}>Create Private Genre</button>
         </>
 
     );
