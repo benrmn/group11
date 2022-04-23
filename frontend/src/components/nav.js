@@ -1,16 +1,39 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
+import Post from './post';
 
-function nav() {
+
+
+function Navbar() {
+
+    const navigate = useNavigate();
+
     return (
-        // nav bar
-        <nav>
-            <Link to='/'>home</Link>
-            <div>
-            </div>
-            <Link to='/login'>login</Link>
-        </nav>
+        <>
+            <nav className="navbar fixed-top navbar-expand-lg navbar-light" style={{backgroundColor: "#E8E6D9"}}>
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="javascript:;">Group 11</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav ms-auto">
+
+                            <li className="nav-item">
+                            <a className="nav-link active" aria-current="page" href="javascript:;" onClick={() => navigate("/")} >Home</a>
+                            </li>
+
+                            <li className="nav-item">
+                            <a className="nav-link" href="javascript:;" onClick={() => navigate("/login")}>Login</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </>
+
     );
 }
 
-export default nav;
+export default Navbar;
