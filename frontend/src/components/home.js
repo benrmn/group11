@@ -10,9 +10,7 @@ function Home() {
 
     return (
         <>
-            <p>
-            "hi yeti"
-            </p>
+            <button type="button" className="btn btn-primary" onClick={() => navigate("/post")}>Create Post</button>
         </>
 
     );
