@@ -40,7 +40,7 @@ app.post("/posts", async(req,res) => {
     }catch (err) {
         console.error(err.message);
     }
-})
+});
 
 app.get("/posts", async(req, res) => {
     try {
@@ -49,7 +49,7 @@ app.get("/posts", async(req, res) => {
     } catch (err) {
         console.error(err.message);
     }
-})
+});
 
 // priv genre
 app.post("/priv_genre", async (req, res) => {
