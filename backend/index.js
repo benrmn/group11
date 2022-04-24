@@ -34,10 +34,9 @@ pool.connect(function(err) {
 app.post("/posts", async(req,res) => {
     try {
         const {post_text} = req.body;
-        const newPost = await pool.query("INSERT INTO Post (Post_Text) VALUES($1)", 
-        [post_text]);
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text") VALUES ($1) RETURNING *`, [post_text]);
 
-        res.json(newPost);
+        res.json(newPost.rows[0]);
     }catch (err) {
         console.error(err.message);
     }
