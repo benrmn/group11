@@ -51,6 +51,48 @@ app.get("/posts", async(req, res) => {
     }
 })
 
+// user login
+app.post("/users", async (req, res) => {
+    try {
+        const { uname, pass } = req.body;
+        const newP_Genre = await pool.query(`INSERT INTO "User" ("Username","Password","User_Fname","User_Lname","isAdmin","isBanned") VALUES ('shrek_two','shrek2','Shrek','Green',true,false) RETURNING *`);//, [ uname, pass]);
+        res.json(newP_Genre.rows[0]);
+
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/users", async (req, res) => {
+    try {
+        const allP_Genre = await pool.query(`SELECT * FROM "Users"`);
+        res.json(allP_Genre.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/users/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const idP_Genre = await pool.query(`SELECT * FROM "Users" WHERE "User_ID" = $1`, [id]);
+        res.json(idP_Genre.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// app.put("/users/:id", async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { name } = req.body;
+//         const updateP_Genre = await pool.query(`UPDATE "Genre" SET "Genre_Name" = $1 WHERE "Genre_ID" = $2`, [name, id]);
+//         res.json("pgenre was updated");
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
 // priv genre
 app.post("/priv_genre", async (req, res) => {
     try {
