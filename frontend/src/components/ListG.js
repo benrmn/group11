@@ -1,40 +1,40 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import UpdatePG from "./UpdatePG";
+import UpdateG from "./UpdateG";
 
-const ListPG = () => {
-    const [pgenres, setPGenres] = useState([]);
+const ListG = () => {
+    const [genres, setGenres] = useState([]);
 
-    //delete pgenre function
+    //delete genre function
 
-    const deletePGenre = async id => {
+    const deleteGenre = async id => {
         try {
-            const deletePGenre = await fetch(`http://localhost:5000/priv_genre/${id}`, {
+            const deleteGenre = await fetch(`http://localhost:5000/genre/${id}`, {
                 method: "DELETE"
             });
 
-            setPGenres(pgenres.filter(pgenre => pgenre.Genre_ID !== id));
+            setGenres(genres.filter(genre => genre.Genre_ID !== id));
         } catch (err) {
             console.error(err.message);
         }
     };
 
-    const getPGenre = async () => {
+    const getGenre = async () => {
         try {
-            const response = await fetch("http://localhost:5000/priv_genre");
+            const response = await fetch("http://localhost:5000/genre");
             const jsonData = await response.json();
 
-            setPGenres(jsonData);
+            setGenres(jsonData);
         } catch (err) {
             console.error(err.message);
         }
     };
 
     useEffect(() => {
-        getPGenre();
+        getGenre();
     }, []);
 
-    console.log(pgenres);
+    console.log(genres);
 
     return (
         <Fragment>
@@ -48,14 +48,14 @@ const ListPG = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {pgenres.map(pgenre => (
-                        <tr key={pgenre.Genre_ID}>
-                            <td>{pgenre.Genre_Name}</td>
+                    {genres.map(genre => (
+                        <tr key={genre.Genre_ID}>
+                            <td>{genre.Genre_Name}</td>
                             <td>
-                                <UpdatePG pgenre={pgenre} />
+                                <UpdateG genre={genre} />
                             </td>
                             <td>
-                                <button className="btn btn-danger" onClick={() => deletePGenre(pgenre.Genre_ID)}>
+                                <button className="btn btn-danger" onClick={() => deleteGenre(genre.Genre_ID)}>
                                     Delete
                                 </button>
                             </td>
@@ -67,4 +67,4 @@ const ListPG = () => {
     );
 };
 
-export default ListPG;
+export default ListG;

@@ -1,19 +1,19 @@
 import React, { Fragment, useState } from "react";
 
-const AddPG = () => {
+const AddG = () => {
     const [name, setName] = useState("");
 
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
             const body = { name };
-            const response = await fetch("http://localhost:5000/priv_genre", {
+            const response = await fetch("http://localhost:5000/genre", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
 
-            window.location = "/priv_genre";
+            window.location = "/genre";
         } catch (err) {
             console.error(err.message);
         }
@@ -21,7 +21,7 @@ const AddPG = () => {
 
     return (
         <Fragment>
-            <h1 className="text-center mt-5">Private Topic's</h1>
+            <h1 className="text-center mt-5">Topic's</h1>
             <form className="d-flex mt-5" onSubmit={onSubmitForm}>
                 <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} />
                 <button className="btn btn-success">Add</button>
@@ -30,4 +30,4 @@ const AddPG = () => {
     );
 };
 
-export default AddPG;
+export default AddG;

@@ -6,9 +6,8 @@ import Home from './components/home';
 import Post from './components/post';
 import AddPG from './components/AddPG';
 import ListPG from './components/ListPG';
-import UpdatePG from './components/UpdatePG';
-
-
+import AddG from './components/AddG';
+import ListG from './components/ListG';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -22,8 +21,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/post" element={<Post />} />
-            <Route path="/priv_genre"
-              element={<><ListPG /><AddPG /></>} />
+            <Route path="/genre" element={<><AddG /><ListG /></>} />
+            <Route path="/priv_genre" element={<><AddPG /><ListPG /></>} />
           </Routes>
         </header>
       </div>
