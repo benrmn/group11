@@ -4,6 +4,7 @@ import Nav from './components/nav';
 import Login from './components/login';
 import Home from './components/home';
 import Post from './components/post';
+import ShowPosts from './components/ShowPosts';
 import AddPG from './components/AddPG';
 import ListPG from './components/ListPG';
 import AddG from './components/AddG';
@@ -17,6 +18,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Nav />
+          <ShowPosts />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

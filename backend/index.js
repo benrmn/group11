@@ -4,6 +4,8 @@ const routesHandler = require('./routes/handler');
 require('dotenv').config();
 
 const { Pool, Client } = require("pg");
+
+
 //const db = new Pool();
 
 const pool = new Pool({
@@ -12,6 +14,7 @@ const pool = new Pool({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 });
+
 
 const app = express()
 
@@ -44,13 +47,12 @@ app.post("/posts", async(req,res) => {
 
 app.get("/posts", async(req, res) => {
     try {
-        const allPosts = await db.query("SELECT * FROM Post");
+        const allPosts = await pool.query(`SELECT * FROM "Post"`);
         res.json(allPosts.rows);
     } catch (err) {
         console.error(err.message);
     }
 });
-
 // PRIVATE TOPICS
 app.post("/priv_genre", async (req, res) => {
     try {
