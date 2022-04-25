@@ -4,6 +4,8 @@ const routesHandler = require('./routes/handler');
 require('dotenv').config();
 
 const { Pool, Client } = require("pg");
+
+
 //const db = new Pool();
 
 const pool = new Pool({
@@ -12,6 +14,7 @@ const pool = new Pool({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 });
+
 
 const app = express()
 
@@ -34,23 +37,23 @@ pool.connect(function(err) {
 app.post("/posts", async(req,res) => {
     try {
         const {post_text} = req.body;
-        const newPost = await pool.query("INSERT INTO Post (Post_Text) VALUES($1)", 
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text") VALUES($1) RETURNING *`, 
         [post_text]);
 
-        res.json(newPost);
+        res.json(newPost.rows[0]);
     }catch (err) {
         console.error(err.message);
     }
-})
+});
 
 app.get("/posts", async(req, res) => {
     try {
-        const allPosts = await db.query("SELECT * FROM Post");
+        const allPosts = await pool.query(`SELECT * FROM "Post"`);
         res.json(allPosts.rows);
     } catch (err) {
         console.error(err.message);
     }
-})
+});
 
 
 // (async () => {
