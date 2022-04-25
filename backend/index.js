@@ -65,7 +65,7 @@ app.post("/priv_genre", async (req, res) => {
 
 app.get("/priv_genre", async (req, res) => {
     try {
-        const allP_Genre = await pool.query(`SELECT * FROM "Genre"`);
+        const allP_Genre = await pool.query(`SELECT * FROM "Genre" WHERE "isPrivate" = true`);
         res.json(allP_Genre.rows);
     } catch (err) {
         console.error(err.message);
