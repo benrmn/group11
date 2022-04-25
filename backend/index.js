@@ -40,7 +40,7 @@ app.post("/posts", async(req,res) => {
     }catch (err) {
         console.error(err.message);
     }
-})
+});
 
 app.get("/posts", async(req, res) => {
     try {
@@ -49,7 +49,7 @@ app.get("/posts", async(req, res) => {
     } catch (err) {
         console.error(err.message);
     }
-})
+});
 
 // user login
 app.post("/users", async (req, res) => {
@@ -63,20 +63,20 @@ app.post("/users", async (req, res) => {
     }
 });
 
-app.get("/users", async (req, res) => {
+app.get("/login", async (req, res) => {
     try {
-        const allP_Genre = await pool.query(`SELECT * FROM "Users"`);
-        res.json(allP_Genre.rows);
+        const allLogin = await pool.query(`SELECT * FROM "Users"`);
+        res.json(allLogin.rows);
     } catch (err) {
         console.error(err.message);
     }
 });
 
-app.get("/users/:id", async (req, res) => {
+app.get("/login/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const idP_Genre = await pool.query(`SELECT * FROM "Users" WHERE "User_ID" = $1`, [id]);
-        res.json(idP_Genre.rows[0]);
+        const idLogin = await pool.query(`SELECT * FROM "Users" WHERE "User_ID" = $1`, [id]);
+        res.json(idLogin.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
@@ -107,7 +107,7 @@ app.post("/priv_genre", async (req, res) => {
 
 app.get("/priv_genre", async (req, res) => {
     try {
-        const allP_Genre = await pool.query(`SELECT * FROM "Genre"`);
+        const allP_Genre = await pool.query(`SELECT * FROM "Genre" WHERE "isPrivate" = true`);
         res.json(allP_Genre.rows);
     } catch (err) {
         console.error(err.message);
@@ -140,6 +140,58 @@ app.delete("/priv_genre/:id", async (req, res) => {
         const { id } = req.params;
         const deleteP_Genre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         res.json("pgenre was deleted");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// PUBLIC TOPICS
+app.post("/genre", async (req, res) => {
+    try {
+        const { name } = req.body;
+        const newGenre = await pool.query(`INSERT INTO "Genre" ("Genre_Name", "isPrivate") VALUES ($1, false) RETURNING *`, [name]);
+        res.json(newGenre.rows[0]);
+
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/genre", async (req, res) => {
+    try {
+        const allGenre = await pool.query(`SELECT * FROM "Genre" WHERE "isPrivate" = false`);
+        res.json(allGenre.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/genre/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const idGenre = await pool.query(`SELECT * FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
+        res.json(idGenre.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/genre/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name } = req.body;
+        const updateGenre = await pool.query(`UPDATE "Genre" SET "Genre_Name" = $1 WHERE "Genre_ID" = $2`, [name, id]);
+        res.json("genre was updated");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete("/genre/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteGenre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
+        res.json("genre was deleted");
     } catch (err) {
         console.error(err.message);
     }

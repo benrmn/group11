@@ -1,16 +1,21 @@
 import React, { Fragment, useState } from "react";
+import { Modal, Button } from 'react-bootstrap';
 
 const UpdatePG = ({ pgenre }) => {
-    const [name, setName] = useState(pgenre.name);
+    const [name, setName] = useState(pgenre.Genre_Name);
+    const [show, setShow] = useState(false);
 
-    //edit description function
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+  //edit description function
 
     const updateName = async e => {
         e.preventDefault();
         try {
             const body = { name };
             const response = await fetch(
-                `http://localhost:5000/priv_genre/${pgenre.pgenre_id}`,
+                `http://localhost:5000/priv_genre/${pgenre.Genre_ID}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -18,7 +23,7 @@ const UpdatePG = ({ pgenre }) => {
                 }
             );
 
-            window.location = "/";
+            window.location = "/priv_genre";
         } catch (err) {
             console.error(err.message);
         }
@@ -26,65 +31,53 @@ const UpdatePG = ({ pgenre }) => {
 
     return (
         <Fragment>
-            <button
-                type="button"
-                class="btn btn-warning"
-                data-toggle="modal"
-                data-target={`#id${pgenre.pgenre_id}`}
-            >
+            <>
+                <Button variant="primary" onClick={handleShow} data-bs-target={`#id${pgenre.Genre_ID}`}>
+                    Edit
+                </Button>
+                <Modal show={show} id={`id${pgenre.Genre_ID}`} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit PG Title</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body><input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} /></Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={e => updateName(e)}>
+                            Save Changes
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </>
+            {/* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#id${pgenre.Genre_ID}`}>
                 Edit
-            </button>
-
-            { }
-            <div
-                class="modal"
-                id={`id${pgenre.pgenre_id}`}
-                onClick={() => setName(pgenre.name)}
-            >
+            </button> */}
+            {/* <div class="modal fade" id={`id${pgenre.Genre_ID}`} tabindex="-1" onClick={() => setName(pgenre.Genre_Name)}>
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Genre</h4>
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                onClick={() => setName(pgenre.name)}
-                            >
+                            <h4 class="modal-title">Edit PG</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" onClick={() => setName(pgenre.Genre_Name)}>
                                 &times;
                             </button>
                         </div>
 
                         <div class="modal-body">
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                            />
+                            <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} />
                         </div>
 
                         <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-warning"
-                                data-dismiss="modal"
-                                onClick={e => updateName(e)}
-                            >
+                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onClick={e => updateName(e)}>
                                 Edit
                             </button>
-                            <button
-                                type="button"
-                                class="btn btn-danger"
-                                data-dismiss="modal"
-                                onClick={() => setName(pgenre.name)}
-                            >
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => setName(pgenre.Genre_Name)}>
                                 Close
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </Fragment>
     );
 };
