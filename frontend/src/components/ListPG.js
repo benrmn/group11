@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import ShowPosts from "./ShowPosts";
 
 import UpdatePG from "./UpdatePG";
 
@@ -45,6 +46,7 @@ const ListPG = () => {
                         <th>Title</th>
                         <th>Edit</th>
                         <th>Delete</th>
+                        <th>TESTING</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,6 +61,7 @@ const ListPG = () => {
                                     Delete
                                 </button>
                             </td>
+                            <td> <ShowPosts genre={pgenre} /></td>
                         </tr>
                     ))}
                 </tbody>

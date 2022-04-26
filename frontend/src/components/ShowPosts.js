@@ -8,7 +8,7 @@ function ShowPosts({ genre }) {
         try {
             // the fetch will need to be (`http://localhost:5000/genre_posts/${genre.Genre_ID}`); once we have its own page setup
             // i still need to find a way to give a genre id its own page
-            const response = await fetch(`http://localhost:5000/genre_posts/17`);
+            const response = await fetch(`http://localhost:5000/genre_posts/${genre.Genre_ID}`);
             const jsonData = await response.json(); //parse data
 
             setPosts(jsonData); //changing state

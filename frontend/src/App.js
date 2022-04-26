@@ -23,6 +23,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/post" element={<Post />} />
+            {/* TESTING DONT YELL AT ME */}
+            <Route path="/genre_posts" element={<Post />} />
             <Route path="/genre" element={<><AddG /><ListG /></>} />
             <Route path="/priv_genre" element={<><AddPG /><ListPG /></>} />
           </Routes>
