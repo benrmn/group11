@@ -18,13 +18,14 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Nav />
-          <ShowPosts />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/post" element={<Post />} />
-            {/* TESTING DONT YELL AT ME */}
-            <Route path="/genre_posts" element={<Post />} />
+
+            {/* DUMBASS HARD CODE 17 BITCH */}
+            <Route path="/genre_posts/:id" element={<><Post /><ShowPosts /></>} />
+            {/* <Route path="/post/:id" element={<Post id={17} />} /> */}
+
             <Route path="/genre" element={<><AddG /><ListG /></>} />
             <Route path="/priv_genre" element={<><AddPG /><ListPG /></>} />
           </Routes>

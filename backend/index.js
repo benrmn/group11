@@ -43,10 +43,11 @@ pool.connect(function(err) {
 // });
 
 //create a post
-app.post("/posts", async(req,res) => {
+app.post("/posts/:id", async (req, res) => {
     try {
+        const { id } = req.params;
         const {post_text} = req.body;
-        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text") VALUES ($1) RETURNING *`, [post_text]);
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID") VALUES ($1, $2) RETURNING *`, [post_text, id]);
 
         res.json(newPost.rows[0]);
     }catch (err) {

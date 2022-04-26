@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ShowPosts from "./ShowPosts";
 
 import UpdatePG from "./UpdatePG";
@@ -43,16 +44,17 @@ const ListPG = () => {
             <table class="table mt-5 text-center">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th>Title pgenres</th>
                         <th>Edit</th>
                         <th>Delete</th>
-                        <th>TESTING</th>
                     </tr>
                 </thead>
                 <tbody>
                     {pgenres.map(pgenre => (
                         <tr key={pgenre.Genre_ID}>
-                            <td>{pgenre.Genre_Name}</td>
+                            <td>
+                                <Link to={`/genre_posts/${pgenre.Genre_ID}`} element={<ShowPosts />}>{pgenre.Genre_Name}</Link>
+                            </td>
                             <td>
                                 <UpdatePG pgenre={pgenre} />
                             </td>
@@ -61,7 +63,6 @@ const ListPG = () => {
                                     Delete
                                 </button>
                             </td>
-                            <td> <ShowPosts genre={pgenre} /></td>
                         </tr>
                     ))}
                 </tbody>
