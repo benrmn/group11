@@ -32,12 +32,22 @@ pool.connect(function(err) {
     // pool.end();
 });
 
-//create a post
+//login
+// app.get("/login", async (req, res) => {
+//     try {
+//         const allLogin = await pool.query(`SELECT * FROM "User"`);
+//         res.json(allLogin.rows);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
 
-app.post("/posts", async(req,res) => {
+//create a post
+app.post("/posts/:id", async (req, res) => {
     try {
+        const { id } = req.params;
         const {post_text} = req.body;
-        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text") VALUES ($1) RETURNING *`, [post_text]);
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID") VALUES ($1, $2) RETURNING *`, [post_text, id]);
 
         res.json(newPost.rows[0]);
     }catch (err) {
@@ -53,6 +63,29 @@ app.get("/posts", async(req, res) => {
         console.error(err.message);
     }
 });
+
+// get posts under genre id
+app.get("/genre_posts/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const idGenre = await pool.query(`SELECT * FROM "Post" WHERE "Genre_ID" = $1`, [id]);
+        res.json(idGenre.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// app.put("/genre_posts", async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { name } = req.body;
+//         const updateP_Genre = await pool.query(`UPDATE "Post" SET "Genre_ID" = 17 WHERE "Post_Text" = 'hi there'`);
+//         res.json("post genre id was updated");
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
 // PRIVATE TOPICS
 app.post("/priv_genre", async (req, res) => {
     try {
@@ -156,6 +189,7 @@ app.delete("/genre/:id", async (req, res) => {
         console.error(err.message);
     }
 });
+
 
 // (async () => {
 //     const client = await pool.connect();
