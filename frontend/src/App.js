@@ -18,11 +18,11 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Nav />
-          <ShowPosts />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/post" element={<Post />} />
+            <Route path="/show_posts" element={<ShowPosts />} />
             <Route path="/genre" element={<><AddG /><ListG /></>} />
             <Route path="/priv_genre" element={<><AddPG /><ListPG /></>} />
           </Routes>

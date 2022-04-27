@@ -1,7 +1,6 @@
-
 import React, {useEffect, useState} from "react";
 
-function ShowPosts () {
+function UserPosts () {
     
     const [posts, setPosts] = useState([]);
 
@@ -31,7 +30,7 @@ function ShowPosts () {
                     {posts.map(Post =>  (
                         <>
                             <hr></hr>
-                            <h1 key={Post.Post_ID}>{Post.Post_Text} </h1>
+                            <h1 key={Post.User_ID}>{Post.Post_Text} </h1>
                         </>
                     ))}
                 </div>
@@ -42,5 +41,4 @@ function ShowPosts () {
 }
 
 
-
-export default ShowPosts;
+export default UserPosts;

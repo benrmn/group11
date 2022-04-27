@@ -53,6 +53,17 @@ app.get("/posts", async(req, res) => {
         console.error(err.message);
     }
 });
+
+//get posts from user ID that is logged in
+app.get("/posts/:id", async(req, res) => {
+    try {
+        const { id } = req.params;
+        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
+        res.json(allPosts.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 // PRIVATE TOPICS
 app.post("/priv_genre", async (req, res) => {
     try {
