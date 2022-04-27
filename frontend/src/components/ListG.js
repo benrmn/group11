@@ -1,4 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
+import ShowPosts from "./ShowPosts";
 
 import UpdateG from "./UpdateG";
 
@@ -50,7 +53,7 @@ const ListG = () => {
                 <tbody>
                     {genres.map(genre => (
                         <tr key={genre.Genre_ID}>
-                            <td>{genre.Genre_Name}</td>
+                            <td><Link to={`/genre_posts/${genre.Genre_ID}`} element={<ShowPosts />}>{genre.Genre_Name}</Link></td>
                             <td>
                                 <UpdateG genre={genre} />
                             </td>

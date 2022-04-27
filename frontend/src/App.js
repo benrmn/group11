@@ -23,6 +23,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/post" element={<Post />} />
             <Route path="/show_posts" element={<ShowPosts />} />
+            <Route path="/genre_posts/:id" element={<><Post /><ShowPosts /></>} />
             <Route path="/genre" element={<><AddG /><ListG /></>} />
             <Route path="/priv_genre" element={<><AddPG /><ListPG /></>} />
           </Routes>

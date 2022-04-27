@@ -1,19 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { useParams } from "react-router-dom";
 
 
 function Post() {
     const [post_text, setPost] = useState("");
-
+    const { id } = useParams();
     const onSubmitForm = async(e) => {
         e.preventDefault();
         try {
             const body = {post_text};
-            const response = await fetch("http://localhost:5000/posts", {
+            const response = await fetch(`http://localhost:5000/posts/${id}`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)});
 
-            window.location = "/";
+            window.location = `/genre_posts/${id}`;
         } catch(err) {
             console.error(err.message);
         }
@@ -22,6 +23,7 @@ function Post() {
         <>
             <div className="input-group input-group-sm mb-3">
             <span className="input-group-text" id="inputGroup-sizing-sm">Title</span>
+                {/* ayo wtf is this for theres no title lmao */}
             <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></input>
             </div>
 
