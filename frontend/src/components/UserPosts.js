@@ -1,15 +1,13 @@
+import React, {useEffect, useState} from "react";
 
-import React, { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-function ShowPosts() {
+function UserPosts () {
+    
     const [posts, setPosts] = useState([]);
-    const { id } = useParams();
+
     const getPosts = async() => {
         try {
-            // the fetch will need to be (`http://localhost:5000/genre_posts/${genre.Genre_ID}`); once we have its own page setup
-            // i still need to find a way to give a genre id its own page
-            const response = await fetch(`http://localhost:5000/genre_posts/${id}`);
+
+            const response = await fetch("http://localhost:5000/posts");
             const jsonData = await response.json(); //parse data
 
             setPosts(jsonData); //changing state
@@ -32,7 +30,7 @@ function ShowPosts() {
                     {posts.map(Post =>  (
                         <>
                             <hr></hr>
-                            <h1 key={Post.Post_ID}>{Post.Post_Text} </h1>
+                            <h1 key={Post.User_ID}>{Post.Post_Text} </h1>
                         </>
                     ))}
                 </div>
@@ -43,5 +41,4 @@ function ShowPosts() {
 }
 
 
-
-export default ShowPosts;
+export default UserPosts;

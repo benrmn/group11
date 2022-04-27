@@ -64,6 +64,13 @@ app.get("/posts", async(req, res) => {
     }
 });
 
+//get posts from user ID that is logged in
+app.get("/posts/:id", async(req, res) => {
+    try {
+        const { id } = req.params;
+        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
+        res.json(allPosts.rows[0]);
+
 // get posts under genre id
 app.get("/genre_posts/:id", async (req, res) => {
     try {
@@ -74,17 +81,6 @@ app.get("/genre_posts/:id", async (req, res) => {
         console.error(err.message);
     }
 });
-
-// app.put("/genre_posts", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const { name } = req.body;
-//         const updateP_Genre = await pool.query(`UPDATE "Post" SET "Genre_ID" = 17 WHERE "Post_Text" = 'hi there'`);
-//         res.json("post genre id was updated");
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
 
 // PRIVATE TOPICS
 app.post("/priv_genre", async (req, res) => {

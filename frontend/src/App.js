@@ -21,11 +21,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-
-            {/* DUMBASS HARD CODE 17 BITCH */}
+            <Route path="/post" element={<Post />} />
+            <Route path="/show_posts" element={<ShowPosts />} />
             <Route path="/genre_posts/:id" element={<><Post /><ShowPosts /></>} />
-            {/* <Route path="/post/:id" element={<Post id={17} />} /> */}
-
             <Route path="/genre" element={<><AddG /><ListG /></>} />
             <Route path="/priv_genre" element={<><AddPG /><ListPG /></>} />
           </Routes>
