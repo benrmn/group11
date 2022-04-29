@@ -50,34 +50,6 @@ const UpdatePG = ({ pgenre }) => {
                     </Modal.Footer>
                 </Modal>
             </>
-            {/* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#id${pgenre.Genre_ID}`}>
-                Edit
-            </button> */}
-            {/* <div class="modal fade" id={`id${pgenre.Genre_ID}`} tabindex="-1" onClick={() => setName(pgenre.Genre_Name)}>
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Edit PG</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" onClick={() => setName(pgenre.Genre_Name)}>
-                                &times;
-                            </button>
-                        </div>
-
-                        <div class="modal-body">
-                            <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} />
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onClick={e => updateName(e)}>
-                                Edit
-                            </button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => setName(pgenre.Genre_Name)}>
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
         </Fragment>
     );
 };

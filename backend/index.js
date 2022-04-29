@@ -70,6 +70,10 @@ app.get("/posts/:id", async(req, res) => {
         const { id } = req.params;
         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
         res.json(allPosts.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 // get posts under genre id
 app.get("/genre_posts/:id", async (req, res) => {
@@ -127,6 +131,7 @@ app.put("/priv_genre/:id", async (req, res) => {
 app.delete("/priv_genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
+        const deletePG_Posts = await pool.query(`DELETE FROM "Post" WHERE "Genre_ID" = $1`, [id]);
         const deleteP_Genre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         res.json("pgenre was deleted");
     } catch (err) {
@@ -179,6 +184,7 @@ app.put("/genre/:id", async (req, res) => {
 app.delete("/genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
+        const deleteG_Posts = await pool.query(`DELETE FROM "Post" WHERE "Genre_ID" = $1`, [id]);
         const deleteGenre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         res.json("genre was deleted");
     } catch (err) {
@@ -206,6 +212,3 @@ app.delete("/genre/:id", async (req, res) => {
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Listening on port ${port}`))
-
-
-
