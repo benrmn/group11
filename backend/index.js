@@ -52,16 +52,15 @@ app.get("/posts", async(req, res) => {
 });
 
 // user login
-app.post("/login", async (req, res) => {
-    try {
-        const { uname, pass } = req.body;
-        const newP_Genre = await pool.query(`INSERT INTO "User" ("Username","Password","User_Fname","User_Lname","isAdmin","isBanned") VALUES ('shrek_two','shrek2','Shrek','Green',true,false) RETURNING *`);//, [ uname, pass]);
-        res.json(newP_Genre.rows[0]);
-
-    } catch (err) {
-        console.error(err.message);
-    }
-});
+// app.post("/login", async (req, res) => {
+//     try {
+//         const { uname, pass } = req.body;
+//         const newP_Genre = await pool.query(`INSERT INTO "User" ("Username","Password","User_Fname","User_Lname","isAdmin","isBanned") VALUES ('shrek_two','shrek2','Shrek','Green',true,false) RETURNING *`);//, [ uname, pass]);
+//         res.json(newP_Genre.rows[0]);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
 
 // app.get("/login", async (req, res) => {
 //     try {
@@ -72,9 +71,9 @@ app.post("/login", async (req, res) => {
 //     }
 // });
 
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
     try {
-        let { uname, pass } = req.body;
+        const { uname, pass } = req.body;
         const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [uname, pass]);
         res.json(idLogin.rows[0]);
     } catch (err) {
