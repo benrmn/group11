@@ -1,21 +1,21 @@
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 
-const UpdatePG = ({ pgenre }) => {
-    const [name, setName] = useState(pgenre.Genre_Name);
+const UpdateC = ({ comment }) => {
+    const [text, setText] = useState(comment.Comment_Text);
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-  //edit description function
+    //edit description function
 
-    const updateName = async e => {
+    const updateText = async e => {
         e.preventDefault();
         try {
-            const body = { name };
+            const body = { text };
             const response = await fetch(
-                `http://localhost:5000/priv_genre/${pgenre.Genre_ID}`,
+                `http://localhost:5000/comment/${comment.Comment_ID}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -23,7 +23,7 @@ const UpdatePG = ({ pgenre }) => {
                 }
             );
 
-            window.location = "/priv_genre";
+            window.location = `/comment/${comment.Post_ID}`;
         } catch (err) {
             console.error(err.message);
         }
@@ -32,19 +32,19 @@ const UpdatePG = ({ pgenre }) => {
     return (
         <Fragment>
             <>
-                <Button variant="primary" onClick={handleShow} data-bs-target={`#id${pgenre.Genre_ID}`}>
+                <Button variant="primary" onClick={handleShow} data-bs-target={`#id${comment.Comment_ID}`}>
                     Edit
                 </Button>
-                <Modal show={show} id={`id${pgenre.Genre_ID}`} onHide={handleClose}>
+                <Modal show={show} id={`id${comment.Comment_ID}`} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit PG Title</Modal.Title>
+                        <Modal.Title>Edit Text</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body><input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} /></Modal.Body>
+                    <Modal.Body><input type="text" className="form-control" value={text} onChange={e => setText(e.target.value)} /></Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={e => updateName(e)}>
+                        <Button variant="primary" onClick={e => updateText(e)}>
                             Save Changes
                         </Button>
                     </Modal.Footer>
@@ -54,4 +54,4 @@ const UpdatePG = ({ pgenre }) => {
     );
 };
 
-export default UpdatePG;
+export default UpdateC;

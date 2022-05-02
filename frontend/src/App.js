@@ -4,10 +4,13 @@ import Nav from './components/nav';
 import FindLogin from './components/login';
 import Home from './components/home';
 import Post from './components/post';
+import ShowPosts from './components/ShowPosts';
 import AddPG from './components/AddPG';
 import ListPG from './components/ListPG';
 import AddG from './components/AddG';
 import ListG from './components/ListG';
+import AddC from './components/AddC';
+import ListC from './components/ListC';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -21,6 +24,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<FindLogin />} />
             <Route path="/post" element={<Post />} />
+            <Route path="/show_posts" element={<ShowPosts />} />
+            <Route path="/genre_posts/:id" element={<><Post /><ShowPosts /></>} />
+            <Route path="/comment/:id" element={<><AddC /><ListC /></>} />
             <Route path="/genre" element={<><AddG /><ListG /></>} />
             <Route path="/priv_genre" element={<><AddPG /><ListPG /></>} />
           </Routes>
