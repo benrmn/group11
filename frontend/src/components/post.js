@@ -1,3 +1,5 @@
+//Kiara Berry coded this file
+
 import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 
@@ -5,10 +7,13 @@ import { useParams } from "react-router-dom";
 function Post() {
     const [post_text, setPost] = useState("");
     const { id } = useParams();
+
+    //function after clicking submit button for post
     const onSubmitForm = async(e) => {
         e.preventDefault();
         try {
             const body = {post_text};
+            //fetch is automatically get so need to clarify it is for 'post'
             const response = await fetch(`http://localhost:5000/posts/${id}`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -31,7 +36,7 @@ function Post() {
             <span className="input-group-text" id="inputGroup-sizing-lg">Body</span>
             <textarea className="form-control" aria-label="With textarea" value={post_text} onChange={e => setPost(e.target.value)}></textarea>
             </div>
-
+            
             <button type="button" classNameName="btn btn-primary" onClick={onSubmitForm}>Post</button>
         </>
 

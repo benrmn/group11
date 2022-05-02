@@ -49,27 +49,44 @@ app.post("/posts/:id", async (req, res) => {
         const {post_text} = req.body;
         const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID") VALUES ($1, $2) RETURNING *`, [post_text, id]);
 
-        res.json(newPost.rows[0]);
+        res.json(newPost.rows);
     }catch (err) {
         console.error(err.message);
     }
 });
 
+
+// app.get("/posts", async(req, res) => {
+//     try {
+//         const allPosts = await pool.query(`SELECT * FROM "Post"`);
+
+//         res.json(allPosts.rows);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
+//get posts from user ID that is logged in
+// app.get("/posts/:id", async(req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
+//         res.json(allPosts.rows);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
 app.get("/posts", async(req, res) => {
     try {
-        const allPosts = await pool.query(`SELECT * FROM "Post"`);
+        const id = req.query.id;
+        // console.log(id)
+        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
         res.json(allPosts.rows);
     } catch (err) {
         console.error(err.message);
     }
 });
-
-//get posts from user ID that is logged in
-app.get("/posts/:id", async(req, res) => {
-    try {
-        const { id } = req.params;
-        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
-        res.json(allPosts.rows[0]);
 
 // get posts under genre id
 app.get("/genre_posts/:id", async (req, res) => {
@@ -176,11 +193,33 @@ app.put("/genre/:id", async (req, res) => {
     }
 });
 
+//this is for edit functionality for user posts
+app.put("/posts/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { text } = req.body;
+        const updateGenre = await pool.query(`UPDATE "Post" SET "Post_Text" = $1 WHERE "Post_ID" = $2`, [text, id]);
+        res.json("post was updated");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 app.delete("/genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const deleteGenre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         res.json("genre was deleted");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete("/posts/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletePost = await pool.query(`DELETE FROM "Post" WHERE "Post_ID" = $1`, [id]);
+        res.json("post was deleted");
     } catch (err) {
         console.error(err.message);
     }

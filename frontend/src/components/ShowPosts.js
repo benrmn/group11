@@ -1,6 +1,8 @@
+//Kiara Berry coded this file
 
 import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 
 function ShowPosts() {
     const [posts, setPosts] = useState([]);
