@@ -88,6 +88,30 @@ app.get("/posts", async(req, res) => {
     }
 });
 
+//get posts from user ID that is logged in
+app.get("/posts/:id", async(req, res) => {
+    try {
+        const { id } = req.params;
+        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
+        res.json(allPosts.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// app.put("/users/:id", async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { name } = req.body;
+//         const updateP_Genre = await pool.query(`UPDATE "Genre" SET "Genre_Name" = $1 WHERE "Genre_ID" = $2`, [name, id]);
+//         res.json("pgenre was updated");
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
+// priv genre
+
 // get posts under genre id
 app.get("/genre_posts/:id", async (req, res) => {
     try {
@@ -144,7 +168,11 @@ app.put("/priv_genre/:id", async (req, res) => {
 app.delete("/priv_genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
+        // create tmp view query
+        const deleteComments = await pool.query(`DELETE FROM "Comment" WHERE "POST_ID" = (SELECT * FROM "Post" WHERE "Genre_ID" = $1)`, [id]);
+        const deletePG_Posts = await pool.query(`DELETE FROM "Post" WHERE "Genre_ID" = $1`, [id]);
         const deleteP_Genre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
+        // delete view
         res.json("pgenre was deleted");
     } catch (err) {
         console.error(err.message);
@@ -208,6 +236,8 @@ app.put("/posts/:id", async (req, res) => {
 app.delete("/genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
+        const deleteComments = await pool.query(`DELETE FROM "Comment" WHERE "POST_ID" = (SELECT * FROM "Post" WHERE "Genre_ID" = $1)`, [id]);
+        const deleteG_Posts = await pool.query(`DELETE FROM "Post" WHERE "Genre_ID" = $1`, [id]);
         const deleteGenre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         res.json("genre was deleted");
     } catch (err) {
@@ -220,6 +250,52 @@ app.delete("/posts/:id", async (req, res) => {
         const { id } = req.params;
         const deletePost = await pool.query(`DELETE FROM "Post" WHERE "Post_ID" = $1`, [id]);
         res.json("post was deleted");
+      } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// comments under a post id
+app.post("/comment/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { text } = req.body;
+        const newComment = await pool.query(`INSERT INTO "Comment" ("Comment_Text", "Post_ID") VALUES ($1, $2) RETURNING *`, [text, id]);
+        res.json(newComment.rows[0]);
+
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/comment/:id", async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        const allComments = await pool.query(`SELECT * FROM "Comment" WHERE "Post_ID" = $1`, [id]);
+        res.json(allComments.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/comment/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { text } = req.body;
+        const updateComment = await pool.query(`UPDATE "Comment" SET "Comment_Text" = $1 WHERE "Comment_ID" = $2`, [text, id]);
+        res.json("Comment was updated");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete("/comment/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteComment = await pool.query(`DELETE FROM "Comment" WHERE "Comment_ID" = $1`, [id]);
+        res.json("Comment was deleted");
+
     } catch (err) {
         console.error(err.message);
     }
@@ -245,6 +321,3 @@ app.delete("/posts/:id", async (req, res) => {
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Listening on port ${port}`))
-
-
-
