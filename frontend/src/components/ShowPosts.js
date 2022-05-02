@@ -1,6 +1,8 @@
 
 import React, { Fragment, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useParams } from "react-router-dom";
+import ListC from './ListC'
 
 function ShowPosts() {
     const [posts, setPosts] = useState([]);
@@ -32,7 +34,8 @@ function ShowPosts() {
                     {posts.map(Post =>  (
                         <>
                             <hr></hr>
-                            <h1 key={Post.Post_ID}>{Post.Post_Text} </h1>
+                            <h1 key={Post.Post_ID}>
+                                <Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></h1>
                         </>
                     ))}
                 </div>
