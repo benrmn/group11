@@ -62,14 +62,15 @@ app.get("/posts", async(req, res) => {
 //     }
 // });
 
-// app.get("/login", async (req, res) => {
-//     try {
-//         const allLogin = await pool.query(`SELECT * FROM "User"`);
-//         res.json(allLogin.rows);
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
+app.delete("/login/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteP_Genre = await pool.query(`DELETE FROM "User" WHERE "User_ID" = $1`, [id]);
+        res.json("user was deleted");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 app.post("/login", async (req, res) => {
     try {
@@ -81,16 +82,17 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// app.put("/users/:id", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const { name } = req.body;
-//         const updateP_Genre = await pool.query(`UPDATE "Genre" SET "Genre_Name" = $1 WHERE "Genre_ID" = $2`, [name, id]);
-//         res.json("pgenre was updated");
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
+app.put("/users/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { fname, lname, uname, isadmin, isbanned } = req.body;
+        const updateP_Genre = await pool.query(`UPDATE "User" SET "User_Fname" = $1,  "User_Lname" = $2, 
+            "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "Genre_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
+        res.json("user was updated");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 // priv genre
 app.post("/priv_genre", async (req, res) => {

@@ -34,14 +34,14 @@ const FindLogin = () => {
                 body: JSON.stringify(body)
             });
 
-            const jsonData = await response.json()
+            const jsonData = await response.json();
             
             
 
             setUsername(jsonData[0]);
             setPassword(jsonData[1]);
 
-            window.location = '/home'
+        //    window.location = '/genre';
 
         } catch (err) {
             console.error(err.message);
