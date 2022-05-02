@@ -1,8 +1,10 @@
+//Kiara Berry coded this file
 
 import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 import ListC from './ListC'
+
 
 function ShowPosts() {
     const [posts, setPosts] = useState([]);
