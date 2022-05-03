@@ -5,7 +5,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 const UpdatePost = ({ Post }) => {
 
-    const [post_text, setPost_Text] = useState(Post.post_text)
+    const [post_text, setPost_Text] = useState(Post.Post_Text)
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -17,14 +17,14 @@ const UpdatePost = ({ Post }) => {
         e.preventDefault();
         try {
             //send request
-            const body = {post_text};
+            const body = { post_text };
             const response = await fetch (`http://localhost:5000/posts/${Post.Post_ID}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             } );
             //refresh screen to see new change
-            window.location = "/";
+            window.location = `/genre_posts/${Post.Genre_ID}`;
         } catch (err) {
             console.error(err.message)
         }

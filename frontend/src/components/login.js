@@ -36,10 +36,10 @@ const FindLogin = () => {
 
             const jsonData = await response.json()
             
-            
+            localStorage.setItem('user_info', JSON.stringify(jsonData))
 
-            setUsername(jsonData[0]);
-            setPassword(jsonData[1]);
+            // setUsername(jsonData[0]);
+            // setPassword(jsonData[1]);
 
             window.location = '/home'
 
