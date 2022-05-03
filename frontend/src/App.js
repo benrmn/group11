@@ -12,6 +12,7 @@ import AddG from './components/AddG';
 import ListG from './components/ListG';
 import AddC from './components/AddC';
 import ListC from './components/ListC';
+import Register from './components/register';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<FindLogin />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/post" element={<Post />} />
             <Route path="/show_posts" element={<ShowPosts />} />
             <Route path="/user_posts/:id" element={<UserPosts />} />
