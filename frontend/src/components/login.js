@@ -34,15 +34,11 @@ const FindLogin = () => {
                 body: JSON.stringify(body)
             });
 
-            const jsonData = await response.json()
+            const jsonData = await response.json();
             
-            localStorage.setItem('user_info', JSON.stringify(jsonData))
+            localStorage.setItem('userinfo',JSON.stringify(jsonData))
 
-            // setUsername(jsonData[0]);
-            // setPassword(jsonData[1]);
-
-            window.location = '/home'
-
+            window.location = '/home';
         } catch (err) {
             console.error(err.message);
         }
@@ -51,13 +47,15 @@ const FindLogin = () => {
     return (
         <Fragment>
             <h1 className="text-center mt-5">Login</h1>
-            <form action="/users/login" method="POST">
+            <form action="/login" method="POST">
                 <div>
                     <input
                     type="username"
                     id="username"
                     name="username"
                     placeholder="Username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
                     required
                     />
                 </div>
@@ -67,11 +65,14 @@ const FindLogin = () => {
                     id="password"
                     name="password"
                     placeholder="Password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     required
                     />
                 </div>
                 <div>
                 <button type='button' classnamename="btn btn-primary" onClick={Login}>Login</button>
+                {/* <button className="btn btn-success btn-block">Log in</button> */}
                 </div>
             </form>
         </Fragment>

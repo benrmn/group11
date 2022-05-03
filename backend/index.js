@@ -96,19 +96,30 @@ app.post("/posts/:id", async (req, res) => {
 //     }
 // });
 
-//get posts from user ID that is logged in
-// app.get("/posts/:id", async(req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
-//         res.json(allPosts.rows);
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
+
+app.delete("/login/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteP_Genre = await pool.query(`DELETE FROM "User" WHERE "User_ID" = $1`, [id]);
+        res.json("user was deleted");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.post("/login", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [username, password]);
+        return res.json(idLogin.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 app.get("/posts", async(req, res) => {
     try {
+
         const id = req.query.id;
         // console.log(id)
         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
@@ -129,16 +140,17 @@ app.get("/posts/:id", async(req, res) => {
     }
 });
 
-// app.put("/users/:id", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const { name } = req.body;
-//         const updateP_Genre = await pool.query(`UPDATE "Genre" SET "Genre_Name" = $1 WHERE "Genre_ID" = $2`, [name, id]);
-//         res.json("pgenre was updated");
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
+app.put("/login/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { fname, lname, uname, isadmin, isbanned } = req.body;
+        const updateP_Genre = await pool.query(`UPDATE "User" SET "User_Fname" = $1,  "User_Lname" = $2, 
+            "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "User_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
+        res.json("user was updated");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 // priv genre
 
