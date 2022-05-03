@@ -53,9 +53,11 @@ app.delete("/login/:id", async (req, res) => {
 
 app.post("/login", async (req, res) => {
     try {
-        const { uname, pass } = req.body;
-        const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [uname, pass]);
-        res.json(idLogin.rows[0]);
+        const { username, password } = req.body;
+        const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [username, password]);
+        console.log(idLogin);
+        // localStorage.setItem('userinfo',idLogin.rows[0])
+        return res.json(idLogin.rows[0]);
     } catch (err) {
         console.error(err.message);
     }

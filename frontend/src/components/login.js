@@ -1,23 +1,3 @@
-// import React from 'react';
-
-// function Login() {
-//     return (
-//         <form>
-//             <div class="container">
-//                 <label for="usrname"><b>Username</b></label>
-//                 <input type="text" placeholder="Enter Username" name="usrname" required></input>
-
-//                 <label for="psswd"><b>Password</b></label>
-//                 <input type="password" placeholder="Enter Password" name="psswd" required></input>
-
-//                 <button type="submit">login</button>
-//             </div>
-//         </form>
-//     );
-// }
-
-// export default Login;
-
 import React, { Fragment, useEffect, useState } from "react";
 
 const FindLogin = () => {
@@ -33,17 +13,18 @@ const FindLogin = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
-
             const jsonData = await response.json();
-            
+            console.log(jsonData);
+
+            localStorage.setItem('loginattempt', JSON.stringify(body))
             localStorage.setItem('userinfo',JSON.stringify(jsonData))
 
-            window.location = '/home';
+            window.location = '/';
+
         } catch (err) {
             console.error(err.message);
         }
     };
-
     return (
         <Fragment>
             <h1 className="text-center mt-5">Login</h1>
@@ -80,51 +61,3 @@ const FindLogin = () => {
 };
 
 export default FindLogin;
-
-// import React, { Fragment, useEffect, useState } from "react";
-
-// const ListLogin = () => {
-    
-//     const [logins, setLogin] = useState([]);
-
-//     const getLogin = async () => {
-//         try {
-//             const response = await fetch("http://localhost:5000/login");
-//             const jsonData = await response.json();
-
-//             setLogin(jsonData);
-//         } catch (err) {
-//             console.error(err.message);
-//         }
-//     };
-
-//     useEffect(() => {
-//         getLogin();
-//     }, []);
-
-//     console.log(logins);
-
-//     return (
-//         <Fragment>
-//             {" "}
-//             <table class="table mt-5 text-center">
-//                 <thead>
-//                     <tr>
-//                         <th>Username</th>
-//                         <th>Password</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {logins.map(login => (
-//                         <tr key={login.User_ID}>
-//                             <td>{login.Username}</td>
-//                             <td>{login.Password}</td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-//         </Fragment>
-//     );
-// };
-
-// export default ListLogin;
