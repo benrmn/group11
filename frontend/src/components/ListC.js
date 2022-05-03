@@ -1,43 +1,41 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 
-import ShowPosts from "./ShowPosts";
+import UpdateC from "./UpdateC";
 
-import UpdateG from "./UpdateG";
-
-const ListG = () => {
-    const [genres, setGenres] = useState([]);
-
+const ListC = () => {
+    const [comments, setComment] = useState([]);
+    const { id } = useParams();
     //delete genre function
 
-    const deleteGenre = async id => {
+    const deleteComment = async id => {
         try {
-            const deleteGenre = await fetch(`http://localhost:5000/genre/${id}`, {
+            const deleteComment = await fetch(`http://localhost:5000/comment/${id}`, {
                 method: "DELETE"
             });
 
-            setGenres(genres.filter(genre => genre.Genre_ID !== id));
+            setComment(comments.filter(comment => comment.Comment_ID !== id));
         } catch (err) {
             console.error(err.message);
         }
     };
 
-    const getGenre = async () => {
+    const getComment = async () => {
         try {
-            const response = await fetch("http://localhost:5000/genre");
+            const response = await fetch(`http://localhost:5000/comment/${id}`);
             const jsonData = await response.json();
 
-            setGenres(jsonData);
+            setComment(jsonData);
         } catch (err) {
             console.error(err.message);
         }
     };
 
     useEffect(() => {
-        getGenre();
+        getComment();
     }, []);
 
-    console.log(genres);
+    console.log(comments);
 
     return (
         <Fragment>
@@ -45,20 +43,20 @@ const ListG = () => {
             <table class="table mt-5 text-center">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th>Text</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {genres.map(genre => (
-                        <tr key={genre.Genre_ID}>
-                            <td><Link to={`/genre_posts/${genre.Genre_ID}`} element={<ShowPosts />}>{genre.Genre_Name}</Link></td>
+                    {comments.map(comment => (
+                        <tr key={comment.Comment_ID}>
+                            <td>{comment.Comment_Text}</td>
                             <td>
-                                <UpdateG genre={genre} />
+                                <UpdateC comment={comment} />
                             </td>
                             <td>
-                                <button className="btn btn-danger" onClick={() => deleteGenre(genre.Genre_ID)}>
+                                <button className="btn btn-danger" onClick={() => deleteComment(comment.Comment_ID)}>
                                     Delete
                                 </button>
                             </td>
@@ -70,4 +68,4 @@ const ListG = () => {
     );
 };
 
-export default ListG;
+export default ListC;

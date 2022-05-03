@@ -33,12 +33,12 @@ const FindLogin = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
+
             const jsonData = await response.json();
             
             localStorage.setItem('userinfo',JSON.stringify(jsonData))
 
-            window.location = '/genre';
-
+            window.location = '/home';
         } catch (err) {
             console.error(err.message);
         }

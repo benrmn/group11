@@ -1,9 +1,11 @@
+//Kiara Berry coded this file
+
 import React from 'react';
 import {useNavigate } from 'react-router-dom';
 import Post from './post';
 
 
-
+//fixed navbar at top of screen
 function Navbar() {
 
     const navigate = useNavigate();
@@ -20,6 +22,7 @@ function Navbar() {
                         <ul className="navbar-nav ms-auto">
 
                             <li className="nav-item">
+                            
                             <a className="nav-link active" aria-current="page" href="javascript:;" onClick={() => navigate("/")} >Home</a>
                             </li>
 
