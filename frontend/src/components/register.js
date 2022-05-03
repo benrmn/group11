@@ -1,10 +1,8 @@
 import React, { Fragment, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Modal, Button } from 'react-bootstrap';
 
-
-const Register = ({ setAuth }) => {
+const Register = () => {
     const [inputs, setInputs] = useState({
         fname: "",
         lname: "",
@@ -22,7 +20,7 @@ const Register = ({ setAuth }) => {
         try {
             const body = { fname, lname, uname, pass };
             const response = await fetch(
-                "http://localhost:5000/register",
+                "http://localhost:5000/auth/register",
                 {
                     method: "POST",
                     headers: {
@@ -33,11 +31,12 @@ const Register = ({ setAuth }) => {
             );
             const parseRes = await response.json();
 
-            if (parseRes.length !== 0) {
-                setAuth(true);
+            if (parseRes.jwt_token) {
+                localStorage.setItem("token", parseRes.jwt_token);
+                //setAuth(true);
                 toast.success("Register Successfully");
             } else {
-                setAuth(false);
+                //setAuth(false);
                 toast.error(parseRes);
             }
         } catch (err) {

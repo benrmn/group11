@@ -1,48 +1,44 @@
-// import React from 'react';
+import React, { Fragment, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 
-// function Login() {
-//     return (
-//         <form>
-//             <div class="container">
-//                 <label for="usrname"><b>Username</b></label>
-//                 <input type="text" placeholder="Enter Username" name="usrname" required></input>
+import { toast } from "react-toastify";
 
-//                 <label for="psswd"><b>Password</b></label>
-//                 <input type="password" placeholder="Enter Password" name="psswd" required></input>
+const Login = () => {
+    const [inputs, setInputs] = useState({
+        uname: "",
+        pass: ""
+    });
 
-//                 <button type="submit">login</button>
-//             </div>
-//         </form>
-//     );
-// }
+    const { uname, pass } = inputs;
 
-// export default Login;
+    const onChange = e =>
+        setInputs({ ...inputs, [e.target.name]: e.target.value });
 
-import React, { Fragment, useEffect, useState } from "react";
-
-const FindLogin = () => {
-    const [username, setUsername] = useState([]);
-    const [password, setPassword] = useState([]);
-
-    const Login = async e => {
+    const onSubmitForm = async e => {
         e.preventDefault();
         try {
-            const body = { username, password };
-            const response = await fetch("http://localhost:5000/login", {
+            const body = { uname, pass };
+            const response = await fetch(
+                "http://localhost:5000/auth/login",
+                {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-type": "application/json"
+                    },
                 body: JSON.stringify(body)
-            });
+                }
+            );
 
-            const jsonData = await response.json()
-            
-            
+            const parseRes = await response.json();
 
-            setUsername(jsonData[0]);
-            setPassword(jsonData[1]);
-
-            window.location = '/home'
-
+            if (parseRes.jwt_token) {
+                localStorage.setItem("token", parseRes.jwt_token);
+                //setAuth(true);
+                toast.success("Logged in Successfully");
+            } else {
+                //setAuth(false);
+                toast.error(parseRes);
+            }
         } catch (err) {
             console.error(err.message);
         }
@@ -50,80 +46,27 @@ const FindLogin = () => {
 
     return (
         <Fragment>
-            <h1 className="text-center mt-5">Login</h1>
-            <form action="/users/login" method="POST">
-                <div>
-                    <input
-                    type="username"
-                    id="username"
-                    name="username"
-                    placeholder="Username"
-                    required
-                    />
-                </div>
-                <div>
-                    <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    required
-                    />
-                </div>
-                <div>
-                <button type='button' classnamename="btn btn-primary" onClick={Login}>Login</button>
-                </div>
+            <h1 className="mt-5 text-center">Login</h1>
+            <form onSubmit={onSubmitForm}>
+                <input
+                    type="text"
+                    name="uname"
+                    value={uname}
+                    onChange={e => onChange(e)}
+                    className="form-control my-3"
+                />
+                <input
+                    type="text"
+                    name="pass"
+                    value={pass}
+                    onChange={e => onChange(e)}
+                    className="form-control my-3"
+                />
+                <button class="btn btn-success btn-block">Submit</button>
             </form>
+            <Link to="/register">register</Link>
         </Fragment>
     );
 };
 
-export default FindLogin;
-
-// import React, { Fragment, useEffect, useState } from "react";
-
-// const ListLogin = () => {
-    
-//     const [logins, setLogin] = useState([]);
-
-//     const getLogin = async () => {
-//         try {
-//             const response = await fetch("http://localhost:5000/login");
-//             const jsonData = await response.json();
-
-//             setLogin(jsonData);
-//         } catch (err) {
-//             console.error(err.message);
-//         }
-//     };
-
-//     useEffect(() => {
-//         getLogin();
-//     }, []);
-
-//     console.log(logins);
-
-//     return (
-//         <Fragment>
-//             {" "}
-//             <table class="table mt-5 text-center">
-//                 <thead>
-//                     <tr>
-//                         <th>Username</th>
-//                         <th>Password</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {logins.map(login => (
-//                         <tr key={login.User_ID}>
-//                             <td>{login.Username}</td>
-//                             <td>{login.Password}</td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-//         </Fragment>
-//     );
-// };
-
-// export default ListLogin;
+export default Login;

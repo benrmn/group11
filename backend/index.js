@@ -32,47 +32,8 @@ pool.connect(function(err) {
 });
 
 //register and login
-//register
-app.post("/register", validinfo, async (req, res) => {
-    try {
-        // get req body
-        const { fname, lname, uname, pass } = req.body;
-        // check if user exist
-        const user = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1`, [uname]);
-
-        if (user.rows.length !== 0) {
-            return res.status(401).send("User already exists");
-        }
-        // enter user user to db
-        const newUser = await pool.query(`INSERT INTO "User" ("User_Fname", "User_Lname", "Username", "Password", "isBanned", "isAdmin") VALUES ($1, $2, $3, $4, false, true) RETURNING *`, [fname, lname, uname, pass]);
-        res.json(newUser.rows[0]);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("Server Error");
-    }
-});
-
-//login
-app.post("/login", validinfo, async (req, res) => {
-    try {
-        // destructure req body
-        const { uname, pass } = req.body;
-        // check if user doesnt exist
-        const user = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1`, [uname]);
-        // check if incoming pass is valid
-        if (user.rows.length === 0) {
-            return res.status(401).json("Pass is incorrect");
-        }
-        const validPass = pass === user.rows[0].Password;
-        if (!validPass) {
-            return res.status(401).json("Pass is incorrect");
-        }
-        res.json(validPass);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("Server Error");
-    }
-});
+app.use("/auth", require("./routes/jwtAuth"));
+app.use("/home", require("./routes/home"));
 
 //create a post
 app.post("/posts/:id", async (req, res) => {
