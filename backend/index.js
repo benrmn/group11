@@ -74,20 +74,20 @@ app.delete("/login/:id", async (req, res) => {
 
 app.post("/login", async (req, res) => {
     try {
-        const { uname, pass } = req.body;
-        const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [uname, pass]);
-        res.json(idLogin.rows[0]);
+        const { username, password } = req.body;
+        const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [username, password]);
+        return res.json(idLogin.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
 });
 
-app.put("/users/:id", async (req, res) => {
+app.put("/login/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const { fname, lname, uname, isadmin, isbanned } = req.body;
         const updateP_Genre = await pool.query(`UPDATE "User" SET "User_Fname" = $1,  "User_Lname" = $2, 
-            "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "Genre_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
+            "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "User_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
         res.json("user was updated");
     } catch (err) {
         console.error(err.message);
