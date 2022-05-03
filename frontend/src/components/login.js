@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
 
 const FindLogin = () => {
     const [username, setUsername] = useState([]);
@@ -28,34 +29,30 @@ const FindLogin = () => {
     return (
         <Fragment>
             <h1 className="text-center mt-5">Login</h1>
-            <form action="/login" method="POST">
-                <div>
+            <form onSubmit={Login}>
                     <input
-                    type="username"
-                    id="username"
-                    name="username"
-                    placeholder="Username"
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                    required
+                        type="text"
+                        className="form-control my-3"
+                        id="username"
+                        name="username"
+                        placeholder="Username"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        required
                     />
-                </div>
-                <div>
                     <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    required
+                        type="text"
+                        className="form-control my-3"
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        required
                     />
-                </div>
-                <div>
-                <button type='button' classnamename="btn btn-primary" onClick={Login}>Login</button>
-                {/* <button className="btn btn-success btn-block">Log in</button> */}
-                </div>
+                <button className="btn btn-success btn-block">Login</button>
             </form>
+            <Link to="/register">Register</Link>
         </Fragment>
     );
 };
