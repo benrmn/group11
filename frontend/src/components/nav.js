@@ -27,7 +27,7 @@ function Navbar() {
                             </li>
 
                             <li className="nav-item">
-                                {/* <a className="nav-link" href="javascript:;" onClick={() => navigate("/login")}>Login</a> */}
+                                <a className="nav-link" href="javascript:;" onClick={() => navigate("/login")}>Login</a>
                             </li>
 
                         </ul>

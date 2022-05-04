@@ -50,12 +50,25 @@ function ShowPosts() {
         var x = getLikes(post_id);
         var y = 0;
         y = Promise.all([x]).then((results) => {
-            //console.log(results[0]);
+            console.log(results[0]);
             return results[0];
         });
         console.log(y);
         //return y;
     };
+
+    const likePost = async (genre_id, post_id) => {
+        const user = JSON.parse(localStorage.getItem("userinfo"))
+        try {
+            const response = await fetch(`http://localhost:5000/like/${post_id}/${user.User_ID}`, {
+                method: "POST"
+            });
+            console.log(user.User_ID);
+            window.location = `/genre_posts/${genre_id}`;
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
 
     useEffect(() => {
         getPosts();
@@ -73,8 +86,8 @@ function ShowPosts() {
                             <hr></hr>
                             <h1 key={Post.Post_ID}>
                                 <Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></h1>
-                            <p>likes: {glikes(Post.Post_ID)}</p>
-                            {/* <button onClick={() => likePost(Post.Post_ID)}>Like</button>  */}
+                            {/* <p>likes: {glikes(Post.Post_ID)}</p> */}
+                            <button onClick={() => likePost(Post.Genre_ID, Post.Post_ID)}>Like</button> 
                             <UpdatePost Post={Post} />
                             <button onClick={() => deletePost(Post.Post_ID)}>Delete</button> 
                         </>

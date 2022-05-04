@@ -386,7 +386,7 @@ app.post("/like/:post_id/:user_id", async (req, res) => {
         const { post_id, user_id } = req.params;
         const newLike = await pool.query(`INSERT INTO "Like" ("Post_ID", "User_ID") VALUES ($1, $2) RETURNING *`, [post_id, user_id]);
         res.json(newLike.rows[0]);
-
+        console.log("new like");
     } catch (err) {
         console.error(err.message);
     }
