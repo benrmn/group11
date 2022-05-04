@@ -148,11 +148,11 @@ app.post("/announcement", async (req, res) => {
 //     }
 // });
 
-app.post("/posts/:id", async (req, res) => {
+app.post("/posts/:id/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, user_id } = req.params;
         const {post_text} = req.body;
-        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID") VALUES ($1, $2) RETURNING *`, [post_text, id]);
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID", "User_ID") VALUES ($1, $2, $3) RETURNING *`, [post_text, id, user_id]);
 
         res.json(newPost.rows);
     }catch (err) {
@@ -257,7 +257,7 @@ app.delete("/priv_genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
         // create tmp view query
-        const deleteComments = await pool.query(`DELETE FROM "Comment" WHERE "POST_ID" = (SELECT * FROM "Post" WHERE "Genre_ID" = $1)`, [id]);
+        const deleteComments = await pool.query(`DELETE FROM "Comment" WHERE "Post_ID" = (SELECT * FROM "Post" WHERE "Genre_ID" = $1)`, [id]);
         const deletePG_Posts = await pool.query(`DELETE FROM "Post" WHERE "Genre_ID" = $1`, [id]);
         const deleteP_Genre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         // delete view
@@ -351,11 +351,11 @@ app.delete("/posts/:id", async (req, res) => {
 });
 
 // comments under a post id
-app.post("/comment/:id", async (req, res) => {
+app.post("/comment/:id/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, user_id } = req.params;
         const { text } = req.body;
-        const newComment = await pool.query(`INSERT INTO "Comment" ("Comment_Text", "Post_ID") VALUES ($1, $2) RETURNING *`, [text, id]);
+        const newComment = await pool.query(`INSERT INTO "Comment" ("Comment_Text", "Post_ID", "User_ID") VALUES ($1, $2, $3) RETURNING *`, [text, id, user_id]);
         res.json(newComment.rows[0]);
 
     } catch (err) {
@@ -396,6 +396,54 @@ app.delete("/comment/:id", async (req, res) => {
     }
 });
 
+/*
+
+
+         -------   Likes STUFF  -------
+
+
+*/
+app.get("/like/:post_id", async (req, res) => {
+    try {
+        const { post_id } = req.params;
+        const newLike = await pool.query(`SELECT COUNT(*) FROM "Like" WHERE "Post_ID" = $1`, [post_id]);
+        res.json(newLike.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/like/:post_id/:user_id", async (req, res) => {
+    try {
+        const { post_id, user_id } = req.params;
+        const newLike = await pool.query(`SELECT COUNT(*) FROM "Like" WHERE "Post_ID" = $1 AND "User_ID" = $2`, [post_id, user_id]);
+        res.json(newLike.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.post("/like/:post_id/:user_id", async (req, res) => {
+    try {
+        const { post_id, user_id } = req.params;
+        const newLike = await pool.query(`INSERT INTO "Like" ("Post_ID", "User_ID") VALUES ($1, $2) RETURNING *`, [post_id, user_id]);
+        res.json(newLike.rows[0]);
+        console.log("new like");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete("/like/:post_id/:user_id", async (req, res) => {
+    try {
+        const { post_id, user_id } = req.params;
+        const deleteLike = await pool.query(`DELETE FROM "Like" WHERE "Post_ID" = $1 AND "User_ID" = $2`, [post_id, user_id]);
+        res.json("Like was deleted");
+
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 // (async () => {
 //     const client = await pool.connect();

@@ -37,6 +37,9 @@ const ListC = () => {
 
     console.log(comments);
 
+    const user = JSON.parse(localStorage.getItem("userinfo"))
+
+    if (user.isAdmin) {
     return (
         <Fragment>
             {" "}
@@ -66,6 +69,25 @@ const ListC = () => {
             </table>
         </Fragment>
     );
+    } else {
+        <Fragment>
+            {" "}
+            <table class="table mt-5 text-center">
+                <thead>
+                    <tr>
+                        <th>Text</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {comments.map(comment => (
+                        <tr key={comment.Comment_ID}>
+                            <td>{comment.Comment_Text}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </Fragment>
+    }
 };
 
 export default ListC;

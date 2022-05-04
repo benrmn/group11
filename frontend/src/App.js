@@ -37,7 +37,7 @@ function App() {
             <Route path="/user" element={<><ShowUser /><UpdateUser /></>} />
             <Route path="/post" element={<Post />} />
             <Route path="/show_posts" element={<ShowPosts />} />
-            <Route path="/user_posts/:id" element={<UserPosts />} />
+            <Route path="/user_posts" element={<UserPosts />} />
             <Route path="/genre_posts/:id" element={<><Post /><ShowPosts /></>} />
             <Route path="/comment/:id" element={<><AddC /><ListC /></>} />
             <Route path="/genre" element={<><AddG /><ListG /></>} />

@@ -6,7 +6,6 @@ import UpdatePG from "./UpdatePG";
 
 const ListPG = () => {
     const [pgenres, setPGenres] = useState([]);
-
     //delete pgenre function
 
     const deletePGenre = async id => {
