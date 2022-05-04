@@ -114,6 +114,21 @@ app.put("/user/:id", async (req, res) => {
     }
 });
 
+//create an announcement
+app.post("/announcement", async (req, res) => {
+    try {
+        //const { id } = req.params;
+        const {text} = req.body;
+        console.log(text);
+        const newAnnouncement = await pool.query(`INSERT INTO "Announcement" ("Announcement_Text") VALUES ($1) RETURNING *`, [text]);
+
+        res.json(newAnnouncement.rows);
+    }catch (err) {
+        console.error(err.message);
+    }
+});
+
+
 /*
 
 
@@ -121,6 +136,7 @@ app.put("/user/:id", async (req, res) => {
 
 
 */
+
 
 // app.get("/posts", async(req, res) => {
 //     try {
@@ -140,6 +156,15 @@ app.post("/posts/:id", async (req, res) => {
 
         res.json(newPost.rows);
     }catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/announcement", async (req, res) => {
+    try {
+        const allAnnouncements = await pool.query(`SELECT * FROM "Announcement" `);
+        res.json(allAnnouncements.rows);
+    } catch (err) {
         console.error(err.message);
     }
 });
