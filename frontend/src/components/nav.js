@@ -30,6 +30,10 @@ function Navbar() {
                             <a className="nav-link" href="javascript:;" onClick={() => navigate("/login")}>Login</a>
                             </li>
 
+                            <li className="nav-item">
+                            <a className="nav-link" href="javascript:;" onClick={() => navigate("/announcement")}>Create Announcement</a>
+                            </li>
+
                         </ul>
                     </div>
                 </div>
