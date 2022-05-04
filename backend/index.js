@@ -74,7 +74,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
-app.delete("/login/:id", async (req, res) => {
+app.delete("/user/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const deleteUser = await pool.query(`DELETE FROM "User" WHERE "User_ID" = $1`, [id]);
@@ -85,17 +85,49 @@ app.delete("/login/:id", async (req, res) => {
 });
 
 
-app.put("/login/:id", async (req, res) => {
+// app.put("/login/:id", async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { fname, lname, uname, isadmin, isbanned } = req.body;
+//         const updateUser = await pool.query(`UPDATE "User" SET "User_Fname" = $1,  "User_Lname" = $2, 
+//             "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "User_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
+//         res.json("user was updated");
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
+app.put("/user/:id", async (req, res) => {
+    // console.log("102")
     try {
         const { id } = req.params;
-        const { fname, lname, uname, isadmin, isbanned } = req.body;
-        const updateUser = await pool.query(`UPDATE "User" SET "User_Fname" = $1,  "User_Lname" = $2, 
-            "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "User_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
+        const { name, field } = req.body;
+        if(field=="User_Fname"){
+            const updateUser = await pool.query(`UPDATE "User" SET "User_Fname" = $1 WHERE "User_ID" = $2`, [ name, id]);}
+        if(field=="User_Lname"){
+            const updateUser = await pool.query(`UPDATE "User" SET "User_Lname" = $1 WHERE "User_ID" = $2`, [ name, id]);}
+        if(field=="Username"){
+            const updateUser = await pool.query(`UPDATE "User" SET "Username" = $1 WHERE "User_ID" = $2`, [ name, id]);}
         res.json("user was updated");
     } catch (err) {
         console.error(err.message);
     }
 });
+
+//create an announcement
+app.post("/announcement", async (req, res) => {
+    try {
+        //const { id } = req.params;
+        const {text} = req.body;
+        console.log(text);
+        const newAnnouncement = await pool.query(`INSERT INTO "Announcement" ("Announcement_Text") VALUES ($1) RETURNING *`, [text]);
+
+        res.json(newAnnouncement.rows);
+    }catch (err) {
+        console.error(err.message);
+    }
+});
+
 
 /*
 
@@ -104,6 +136,7 @@ app.put("/login/:id", async (req, res) => {
 
 
 */
+
 
 // app.get("/posts", async(req, res) => {
 //     try {
@@ -123,6 +156,15 @@ app.post("/posts/:id/:user_id", async (req, res) => {
 
         res.json(newPost.rows);
     }catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/announcement", async (req, res) => {
+    try {
+        const allAnnouncements = await pool.query(`SELECT * FROM "Announcement" `);
+        res.json(allAnnouncements.rows);
+    } catch (err) {
         console.error(err.message);
     }
 });

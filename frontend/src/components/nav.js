@@ -11,6 +11,7 @@ function Navbar() {
 
     const navigate = useNavigate();
 
+
     if ("userinfo" in localStorage) {
         return (
             <>
@@ -30,6 +31,10 @@ function Navbar() {
 
                                 <li className="nav-item">
                                     <a className="nav-link" href="javascript:;" onClick={function () { localStorage.removeItem("userinfo"); navigate("/") }}>Logout</a>
+                                </li>
+
+                                <li className="nav-item">
+                                    <a className="nav-link" href="javascript:;" onClick={() => navigate("/announcement")}>Create Announcement</a>
                                 </li>
 
                             </ul>
@@ -60,8 +65,13 @@ function Navbar() {
                                     <a className="nav-link" href="javascript:;" onClick={() => navigate("/login")}>Login</a>
                                 </li>
 
+                                <li className="nav-item">
+                                    <a className="nav-link" href="javascript:;" onClick={() => navigate("/announcement")}>Create Announcement</a>
+                                </li>
+
                             </ul>
                         </div>
+
                     </div>
                 </nav>
             </>
