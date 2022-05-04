@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-r
 const AddC = () => {
     const [text, setText] = useState("");
     const { id } = useParams();
-
+    const user = JSON.parse(localStorage.getItem("userinfo"))
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
             const body = { text };
-            const response = await fetch(`http://localhost:5000/comment/${id}`, {
+            const response = await fetch(`http://localhost:5000/comment/${id}/${user.User_ID}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)

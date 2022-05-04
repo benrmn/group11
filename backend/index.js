@@ -115,11 +115,11 @@ app.put("/login/:id", async (req, res) => {
 //     }
 // });
 
-app.post("/posts/:id", async (req, res) => {
+app.post("/posts/:id/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, user_id } = req.params;
         const {post_text} = req.body;
-        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID") VALUES ($1, $2) RETURNING *`, [post_text, id]);
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID", "User_ID") VALUES ($1, $2, $3) RETURNING *`, [post_text, id, user_id]);
 
         res.json(newPost.rows);
     }catch (err) {
@@ -309,11 +309,11 @@ app.delete("/posts/:id", async (req, res) => {
 });
 
 // comments under a post id
-app.post("/comment/:id", async (req, res) => {
+app.post("/comment/:id/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, user_id } = req.params;
         const { text } = req.body;
-        const newComment = await pool.query(`INSERT INTO "Comment" ("Comment_Text", "Post_ID") VALUES ($1, $2) RETURNING *`, [text, id]);
+        const newComment = await pool.query(`INSERT INTO "Comment" ("Comment_Text", "Post_ID", "User_ID") VALUES ($1, $2, $3) RETURNING *`, [text, id, user_id]);
         res.json(newComment.rows[0]);
 
     } catch (err) {

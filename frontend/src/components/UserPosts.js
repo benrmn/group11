@@ -1,7 +1,8 @@
 //Kiara Berry coded this file
 
-import React, {useEffect, useState} from "react";
-
+import React, { Component, Fragment, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, renderMatches } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import UpdatePost from "./UpdatePost";
 
 function UserPosts () {
@@ -11,9 +12,10 @@ function UserPosts () {
     //delete function for post
     const deletePost = async(id) => {
         try {
-            const deletePost = await fetch(`http://localhost:5000/posts/${id}`, {method: "DELETE"
-            
-        }); 
+            const deletePost = await fetch(`http://localhost:5000/posts/${id}`,
+                {
+                    method: "DELETE"
+                }); 
         //only display posts that fit filter condition
         setPosts(posts.filter(Post => Post.Post_ID !== id))
         }catch(err) {
@@ -21,14 +23,15 @@ function UserPosts () {
         }
     }
 
-    const getPosts = async() => {
+    const getPosts = async () => {
+        const user = JSON.parse(localStorage.getItem("userinfo"))
         try {
 
-            const response = await fetch("http://localhost:5000/posts?id=1");
+            const response = await fetch(`http://localhost:5000/posts/${user.User_ID}`);
             const jsonData = await response.json(); //parse data
 
             setPosts(jsonData); //changing state
-            console.log(jsonData)
+            console.log(jsonData);
         } catch(err) {
             console.error(err.message)
         }
@@ -47,7 +50,7 @@ function UserPosts () {
                 <div className="col">
                     {posts.map(Post =>  (
                         <>
-                            <hr></hr>
+                            <hr>test</hr>
                             <h1 key={Post.User_ID}>{Post.Post_Text} </h1>
                             <UpdatePost Post = {Post} />
                             <button onClick={() => deletePost(Post.Post_ID)}>Delete</button> 

@@ -1,16 +1,22 @@
 //Kiara Berry coded this file
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Component, Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, renderMatches } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 import ListC from './ListC'
 import UpdatePost from "./UpdatePost";
 
 
-
 function ShowPosts() {
     const [posts, setPosts] = useState([]);
-    const [totLikes, setTotLikes] = useState('0');
+    const totLikes = 0;
+    const user = JSON.parse(localStorage.getItem("userinfo"));
+
+    function setStateAsync(totLikes) {
+        return new Promise((resolve) => {
+            this.setState(totLikes, resolve)
+        });
+    }
 
     const { id } = useParams();
     const getPosts = async() => {
@@ -40,7 +46,7 @@ function ShowPosts() {
             const response = await fetch(`http://localhost:5000/like/${post_id}`);
             const jsonData = await response.json();
             //console.log(jsonData.count);
-            return jsonData.count
+            await this.setStateAsync({ totLikes: jsonData.count });
         } catch (err) {
             console.error(err.message);
         }
@@ -58,7 +64,6 @@ function ShowPosts() {
     };
 
     const likePost = async (genre_id, post_id) => {
-        const user = JSON.parse(localStorage.getItem("userinfo"))
         try {
             const response = await fetch(`http://localhost:5000/like/${post_id}/${user.User_ID}`, {
                 method: "POST"
@@ -75,7 +80,7 @@ function ShowPosts() {
     }, []); //ensure we only make one request
     // console.log(posts)
 
-
+    if (user.isAdmin) {
     return (
         <div className="container">
             <div className="row">
@@ -86,7 +91,7 @@ function ShowPosts() {
                             <hr></hr>
                             <h1 key={Post.Post_ID}>
                                 <Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></h1>
-                            {/* <p>likes: {glikes(Post.Post_ID)}</p> */}
+                            {/* <p>likes: {getLikes(Post.Post_ID)}</p> */}
                             <button onClick={() => likePost(Post.Genre_ID, Post.Post_ID)}>Like</button> 
                             <UpdatePost Post={Post} />
                             <button onClick={() => deletePost(Post.Post_ID)}>Delete</button> 
@@ -96,9 +101,30 @@ function ShowPosts() {
             </div>
         </div>
 
-    );
+        );
+    } else {
+        return (
+            <div className="container">
+                <div className="row">
+                    {/* <span className="border border-2"></span> */}
+                    <div className="col">
+                        {posts.map(Post => (
+                            <>
+                                <hr></hr>
+                                <h1 key={Post.Post_ID}>
+                                    <Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></h1>
+                                {/* <p>likes: {getLikes(Post.Post_ID)}</p> */}
+                                <button onClick={() => likePost(Post.Genre_ID, Post.Post_ID)}>Like</button>
+                            </>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+        );
+    }
+
+
 }
-
-
 
 export default ShowPosts;
