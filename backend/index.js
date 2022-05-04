@@ -151,8 +151,8 @@ app.post("/announcement", async (req, res) => {
 app.post("/posts/:id/:user_id", async (req, res) => {
     try {
         const { id, user_id } = req.params;
-        const {post_text} = req.body;
-        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID", "User_ID") VALUES ($1, $2, $3) RETURNING *`, [post_text, id, user_id]);
+        const { post_text, Username } = req.body;
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID", "User_ID", "Username") VALUES ($1, $2, $3, $4) RETURNING *`, [post_text, id, user_id, Username]);
 
         res.json(newPost.rows);
     }catch (err) {
@@ -186,7 +186,17 @@ app.get("/posts/:id", async(req, res) => {
     try {
         const { id } = req.params;
         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
-        res.json(allPosts.rows[0]);
+        res.json(allPosts.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/comment_post/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const commentPosts = await pool.query(`SELECT * FROM "Post" WHERE "Post_ID" = $1`, [id]);
+        res.json(commentPosts);
     } catch (err) {
         console.error(err.message);
     }
@@ -354,8 +364,8 @@ app.delete("/posts/:id", async (req, res) => {
 app.post("/comment/:id/:user_id", async (req, res) => {
     try {
         const { id, user_id } = req.params;
-        const { text } = req.body;
-        const newComment = await pool.query(`INSERT INTO "Comment" ("Comment_Text", "Post_ID", "User_ID") VALUES ($1, $2, $3) RETURNING *`, [text, id, user_id]);
+        const { text, Username } = req.body;
+        const newComment = await pool.query(`INSERT INTO "Comment" ("Comment_Text", "Post_ID", "User_ID", "Username") VALUES ($1, $2, $3, $4) RETURNING *`, [text, id, user_id, Username]);
         res.json(newComment.rows[0]);
 
     } catch (err) {
@@ -403,30 +413,30 @@ app.delete("/comment/:id", async (req, res) => {
 
 
 */
-app.get("/like/:post_id", async (req, res) => {
+// app.get("/like/:post_id", async (req, res) => {
+//     try {
+//         const { post_id } = req.params;
+//         const newLike = await pool.query(`SELECT "Num_likes" FROM "Post" WHERE "Post_ID" = $1`, [post_id]);
+//         res.json(newLike.rows[0]);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
+// app.get("/like/:post_id", async (req, res) => {
+//     try {
+//         const { post_id, user_id } = req.params;
+//         const newLike = await pool.query(`SELECT "Num_likes" FROM "Post" WHERE "Post_ID" = $1 AND "User_ID" = $2`, [post_id, user_id]);
+//         res.json(newLike.rows[0]);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
+app.put("/like/:post_id", async (req, res) => {
     try {
         const { post_id } = req.params;
-        const newLike = await pool.query(`SELECT COUNT(*) FROM "Like" WHERE "Post_ID" = $1`, [post_id]);
-        res.json(newLike.rows[0]);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
-
-app.get("/like/:post_id/:user_id", async (req, res) => {
-    try {
-        const { post_id, user_id } = req.params;
-        const newLike = await pool.query(`SELECT COUNT(*) FROM "Like" WHERE "Post_ID" = $1 AND "User_ID" = $2`, [post_id, user_id]);
-        res.json(newLike.rows[0]);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
-
-app.post("/like/:post_id/:user_id", async (req, res) => {
-    try {
-        const { post_id, user_id } = req.params;
-        const newLike = await pool.query(`INSERT INTO "Like" ("Post_ID", "User_ID") VALUES ($1, $2) RETURNING *`, [post_id, user_id]);
+        const newLike = await pool.query(`UPDATE "Post" SET "Num_likes" = "Num_likes" + 1 WHERE "Post_ID" = $1`, [post_id]);
         res.json(newLike.rows[0]);
         console.log("new like");
     } catch (err) {
@@ -434,10 +444,10 @@ app.post("/like/:post_id/:user_id", async (req, res) => {
     }
 });
 
-app.delete("/like/:post_id/:user_id", async (req, res) => {
+app.put("/dislike/:post_id", async (req, res) => {
     try {
-        const { post_id, user_id } = req.params;
-        const deleteLike = await pool.query(`DELETE FROM "Like" WHERE "Post_ID" = $1 AND "User_ID" = $2`, [post_id, user_id]);
+        const { post_id } = req.params;
+        const deleteLike = await pool.query(`UPDATE "Post" SET "Num_likes" = "Num_likes" - 1 WHERE "Post_ID" = $1`, [post_id]);
         res.json("Like was deleted");
 
     } catch (err) {

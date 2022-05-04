@@ -44,22 +44,44 @@ function UserPosts () {
     // console.log(posts)
 
     return (
-        <div className="container">
-            <div className="row">
-            {/* <span className="border border-2"></span> */}
-                <div className="col">
-                    {posts.map(Post =>  (
-                        <>
-                            <hr>test</hr>
-                            <h1 key={Post.User_ID}>{Post.Post_Text} </h1>
-                            <UpdatePost Post = {Post} />
-                            <button onClick={() => deletePost(Post.Post_ID)}>Delete</button> 
-
-                        </>
+        <Fragment>
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
+                <thead>
+                    <tr>
+                        <th>Posts</th>
+                        <th>Edit / Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {posts.map(Post => (
+                        <tr>
+                            <td>{Post.Post_Text}</td>
+                            <td>
+                                <UpdatePost Post={Post} />
+                                <button onClick={() => deletePost(Post.Post_ID)}>Delete</button>
+                            </td>
+                        </tr>
                     ))}
-                </div>
-            </div>
-        </div>
+                </tbody>
+            </table>
+
+        </Fragment>
+        // <div className="container">
+        //     <div className="row">
+        //     {/* <span className="border border-2"></span> */}
+        //         <div className="col">
+        //             {posts.map(Post =>  (
+        //                 <>
+        //                     <hr>test</hr>
+        //                     <h1 key={Post.Post_ID}>{Post.Post_Text} </h1>
+        //                     <UpdatePost Post = {Post} />
+        //                     <button onClick={() => deletePost(Post.Post_ID)}>Delete</button> 
+
+        //                 </>
+        //             ))}
+        //         </div>
+        //     </div>
+        // </div>
 
     );
 }

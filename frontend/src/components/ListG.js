@@ -45,7 +45,7 @@ const ListG = () => {
     return (
         <Fragment>
             {" "}
-            <table class="table mt-5 text-center">
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -75,7 +75,7 @@ const ListG = () => {
         return (
             <Fragment>
                 {" "}
-                <table class="table mt-5 text-center">
+                <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                     <thead>
                         <tr>
                             <th>Title</th>

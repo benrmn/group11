@@ -43,10 +43,11 @@ const ListC = () => {
     return (
         <Fragment>
             {" "}
-            <table class="table mt-5 text-center">
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
                     <tr>
-                        <th>Text</th>
+                        <th>Comments</th>
+                        <th>Author</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -55,6 +56,7 @@ const ListC = () => {
                     {comments.map(comment => (
                         <tr key={comment.Comment_ID}>
                             <td>{comment.Comment_Text}</td>
+                            <td>{comment.Username}</td>
                             <td>
                                 <UpdateC comment={comment} />
                             </td>
@@ -72,16 +74,18 @@ const ListC = () => {
     } else {
         <Fragment>
             {" "}
-            <table class="table mt-5 text-center">
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
                     <tr>
-                        <th>Text</th>
+                        <th>Comments</th>
+                        <th>Author</th>
                     </tr>
                 </thead>
                 <tbody>
                     {comments.map(comment => (
                         <tr key={comment.Comment_ID}>
                             <td>{comment.Comment_Text}</td>
+                            <td>{comment.Username}</td>
                         </tr>
                     ))}
                 </tbody>

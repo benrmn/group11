@@ -11,10 +11,10 @@ function Post() {
     //function after clicking submit button for post
     const onSubmitForm = async(e) => {
         const user = JSON.parse(localStorage.getItem("userinfo"))
-
+        var Username = user.Username;
         e.preventDefault();
         try {
-            const body = {post_text};
+            const body = { post_text, Username };
             //fetch is automatically get so need to clarify it is for 'post'
             const response = await fetch(`http://localhost:5000/posts/${id}/${user.User_ID}`, {
                 method: "POST",

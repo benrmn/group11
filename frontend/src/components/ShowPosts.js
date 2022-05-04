@@ -9,14 +9,7 @@ import UpdatePost from "./UpdatePost";
 
 function ShowPosts() {
     const [posts, setPosts] = useState([]);
-    const totLikes = 0;
     const user = JSON.parse(localStorage.getItem("userinfo"));
-
-    function setStateAsync(totLikes) {
-        return new Promise((resolve) => {
-            this.setState(totLikes, resolve)
-        });
-    }
 
     const { id } = useParams();
     const getPosts = async() => {
@@ -41,34 +34,22 @@ function ShowPosts() {
         }
     }
 
-    const getLikes = async (post_id) => {
-        try {
-            const response = await fetch(`http://localhost:5000/like/${post_id}`);
-            const jsonData = await response.json();
-            //console.log(jsonData.count);
-            await this.setStateAsync({ totLikes: jsonData.count });
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
-
-    function glikes(post_id) {
-        var x = getLikes(post_id);
-        var y = 0;
-        y = Promise.all([x]).then((results) => {
-            console.log(results[0]);
-            return results[0];
-        });
-        console.log(y);
-        //return y;
-    };
-
     const likePost = async (genre_id, post_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/like/${post_id}/${user.User_ID}`, {
-                method: "POST"
+            const response = await fetch(`http://localhost:5000/like/${post_id}`, {
+                method: "PUT"
             });
-            console.log(user.User_ID);
+            window.location = `/genre_posts/${genre_id}`;
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
+
+    const unlikePost = async (genre_id, post_id) => {
+        try {
+            const response = await fetch(`http://localhost:5000/dislike/${post_id}`, {
+                method: "PUT"
+            });
             window.location = `/genre_posts/${genre_id}`;
         } catch (err) {
             console.error(err.message)
@@ -82,44 +63,63 @@ function ShowPosts() {
 
     if (user.isAdmin) {
     return (
-        <div className="container">
-            <div className="row">
-            {/* <span className="border border-2"></span> */}
-                <div className="col">
-                    {posts.map(Post =>  (
-                        <>
-                            <hr></hr>
-                            <h1 key={Post.Post_ID}>
-                                <Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></h1>
-                            {/* <p>likes: {getLikes(Post.Post_ID)}</p> */}
-                            <button onClick={() => likePost(Post.Genre_ID, Post.Post_ID)}>Like</button> 
-                            <UpdatePost Post={Post} />
-                            <button onClick={() => deletePost(Post.Post_ID)}>Delete</button> 
-                        </>
+        <Fragment>
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
+                <thead>
+                    <tr>
+                        <th>Posts</th>
+                        <th>Author</th>
+                        <th>Like / Dislike</th>
+                        <th>Edit / Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {posts.map(Post => (
+                        <tr key={Post.Post_ID}>
+                            <td><Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></td>
+                            <td>{Post.Username}</td>
+                            <td>
+                                <button onClick={() => likePost(Post.Genre_ID, Post.Post_ID)}>Like</button>
+                                <button onClick={() => unlikePost(Post.Genre_ID, Post.Post_ID)}>dislike</button>
+                            </td>
+                            <td>
+                                <UpdatePost Post={Post} />
+                                <button onClick={() => deletePost(Post.Post_ID)}>Delete</button>
+                            </td>
+                        </tr>
                     ))}
-                </div>
-            </div>
-        </div>
+                </tbody>
+            </table>
+
+        </Fragment>
 
         );
     } else {
         return (
-            <div className="container">
-                <div className="row">
-                    {/* <span className="border border-2"></span> */}
-                    <div className="col">
+            <Fragment>
+                <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
+                    <thead>
+                        <tr>
+                            <th>Posts</th>
+                            <th>Author</th>
+                            <th>Like / Dislike</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {posts.map(Post => (
-                            <>
-                                <hr></hr>
-                                <h1 key={Post.Post_ID}>
-                                    <Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></h1>
-                                {/* <p>likes: {getLikes(Post.Post_ID)}</p> */}
+                        <tr key={Post.Post_ID}>
+                            <td><Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></td>
+                            <td>{Post.Username}</td>
+                            <td>
                                 <button onClick={() => likePost(Post.Genre_ID, Post.Post_ID)}>Like</button>
-                            </>
-                        ))}
-                    </div>
-                </div>
-            </div>
+                                <button onClick={() => unlikePost(Post.Genre_ID, Post.Post_ID)}>dislike</button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+
+            </Fragment>
 
         );
     }
