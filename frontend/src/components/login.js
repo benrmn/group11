@@ -17,10 +17,18 @@ const FindLogin = () => {
             const jsonData = await response.json();
             console.log(jsonData);
 
-            localStorage.setItem('loginattempt', JSON.stringify(body))
-            localStorage.setItem('userinfo',JSON.stringify(jsonData))
+            if(jsonData.isBanned)
+            {
+                alert("You are banned!");
+            }
+            else
+            {
+                localStorage.setItem('loginattempt', JSON.stringify(body))
+                localStorage.setItem('userinfo',JSON.stringify(jsonData))
 
-            window.location = '/';
+                window.location = '/';
+            }
+            
 
         } catch (err) {
             console.error(err.message);
