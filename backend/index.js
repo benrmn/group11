@@ -32,55 +32,84 @@ pool.connect(function(err) {
     // pool.end();
 });
 
-//login
-// app.get("/login", async (req, res) => {
-//     try {
-//         const allLogin = await pool.query(`SELECT * FROM "User"`);
-//         res.json(allLogin.rows);
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
-app.delete("/login/:id", async (req, res) => {
+/*
+
+
+         -------   LOGIN STUFF  -------
+
+
+*/
+
+app.post("/login", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [username, password]);
+        console.log(idLogin);
+        return res.json(idLogin.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.post("/register", async (req, res) => {
+    try {
+        // get req body
+        const { fname, lname, uname, pass } = req.body;
+        // check if user exist
+        const user = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1`, [uname]);
+
+        if (user.rows.length !== 0) {
+            return res.status(401).send("User already exists");
+        }
+
+        // enter user user to db
+        const newUser = await pool.query(`INSERT INTO "User" ("User_Fname", "User_Lname", "Username", "Password", "isBanned", "isAdmin") 
+            VALUES ($1, $2, $3, $4, false, true) RETURNING *`, [fname, lname, uname, pass]);
+
+        res.json(newUser.rows[0])
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+app.delete("/user/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const deleteP_Genre = await pool.query(`DELETE FROM "User" WHERE "User_ID" = $1`, [id]);
+        const deleteUser = await pool.query(`DELETE FROM "User" WHERE "User_ID" = $1`, [id]);
         res.json("user was deleted");
     } catch (err) {
         console.error(err.message);
     }
 });
 
-app.post("/login", async (req, res) => {
-    try {
-        const { uname, pass } = req.body;
-        const idLogin = await pool.query(`SELECT * FROM "User" WHERE "Username" = $1 and "Password" = $2`, [uname, pass]);
-        res.json(idLogin.rows[0]);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
 
-app.put("/users/:id", async (req, res) => {
+// app.put("/login/:id", async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { fname, lname, uname, isadmin, isbanned } = req.body;
+//         const updateUser = await pool.query(`UPDATE "User" SET "User_Fname" = $1,  "User_Lname" = $2, 
+//             "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "User_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
+//         res.json("user was updated");
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
+
+app.put("/user/:id", async (req, res) => {
+    // console.log("102")
     try {
         const { id } = req.params;
-        const { fname, lname, uname, isadmin, isbanned } = req.body;
-        const updateP_Genre = await pool.query(`UPDATE "User" SET "User_Fname" = $1,  "User_Lname" = $2, 
-            "Username" = $3, "isBanned" = $4, "isAdmin" = $5 WHERE "Genre_ID" = $6`, [fname, lname, uname, isbanned, isadmin, id]);
+        const { name, field } = req.body;
+        if(field=="User_Fname"){
+            const updateUser = await pool.query(`UPDATE "User" SET "User_Fname" = $1 WHERE "User_ID" = $2`, [ name, id]);}
+        if(field=="User_Lname"){
+            const updateUser = await pool.query(`UPDATE "User" SET "User_Lname" = $1 WHERE "User_ID" = $2`, [ name, id]);}
+        if(field=="Username"){
+            const updateUser = await pool.query(`UPDATE "User" SET "Username" = $1 WHERE "User_ID" = $2`, [ name, id]);}
         res.json("user was updated");
     } catch (err) {
-        console.error(err.message);
-    }
-});
-//create a post
-app.post("/posts/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const {post_text} = req.body;
-        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID") VALUES ($1, $2) RETURNING *`, [post_text, id]);
-
-        res.json(newPost.rows);
-    }catch (err) {
         console.error(err.message);
     }
 });
@@ -100,6 +129,15 @@ app.post("/announcement", async (req, res) => {
 });
 
 
+/*
+
+
+         -------   POST STUFF  -------
+
+
+*/
+
+
 // app.get("/posts", async(req, res) => {
 //     try {
 //         const allPosts = await pool.query(`SELECT * FROM "Post"`);
@@ -110,16 +148,17 @@ app.post("/announcement", async (req, res) => {
 //     }
 // });
 
-//get posts from user ID that is logged in
-// app.get("/posts/:id", async(req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
-//         res.json(allPosts.rows);
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
+app.post("/posts/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {post_text} = req.body;
+        const newPost = await pool.query(`INSERT INTO "Post" ("Post_Text", "Genre_ID") VALUES ($1, $2) RETURNING *`, [post_text, id]);
+
+        res.json(newPost.rows);
+    }catch (err) {
+        console.error(err.message);
+    }
+});
 
 app.get("/announcement", async (req, res) => {
     try {
@@ -132,6 +171,7 @@ app.get("/announcement", async (req, res) => {
 
 app.get("/posts", async(req, res) => {
     try {
+
         const id = req.query.id;
         // console.log(id)
         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
@@ -152,18 +192,13 @@ app.get("/posts/:id", async(req, res) => {
     }
 });
 
-// app.put("/users/:id", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const { name } = req.body;
-//         const updateP_Genre = await pool.query(`UPDATE "Genre" SET "Genre_Name" = $1 WHERE "Genre_ID" = $2`, [name, id]);
-//         res.json("pgenre was updated");
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
+/*
 
-// priv genre
+
+         -------   PRIV GENRE STUFF  -------
+
+
+*/
 
 // get posts under genre id
 app.get("/genre_posts/:id", async (req, res) => {
@@ -232,7 +267,13 @@ app.delete("/priv_genre/:id", async (req, res) => {
     }
 });
 
-// PUBLIC TOPICS
+/*
+
+
+         -------   PUBLIC TOPICS STUFF  -------
+
+
+*/
 app.post("/genre", async (req, res) => {
     try {
         const { name } = req.body;
