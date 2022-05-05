@@ -1,3 +1,4 @@
+// Jay, Kiara, Dean, and Ben all worked on this file
 import './App.css';
 import React, { Fragment } from "react";
 import Nav from './components/nav';

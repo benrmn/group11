@@ -1,12 +1,10 @@
+// Dean, Kiara, Jay, and Ben all worked on this file
 const express = require('express')
 const cors = require('cors');
-const routesHandler = require('./routes/handler');
 require('dotenv').config();
 
 const { Pool, Client } = require("pg");
 
-
-//const db = new Pool();
 
 const pool = new Pool({
     host: process.env.DATABASE_HOST,
@@ -171,7 +169,7 @@ app.put("/announcement/:id", async (req, res) => {
 
 
          -------   POST STUFF  -------
-
+        Kiara feature set
 
 */
 
@@ -198,7 +196,17 @@ app.post("/posts/:id/:user_id", async (req, res) => {
     }
 });
 
-
+//this is for edit functionality for user posts
+app.put("/posts/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { post_text } = req.body;
+        const updatePost = await pool.query(`UPDATE "Post" SET "Post_Text" = $1 WHERE "Post_ID" = $2`, [post_text, id]);
+        res.json("post was updated");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 // app.get("/posts", async(req, res) => {
 //     try {
@@ -237,6 +245,7 @@ app.get("/comment_post/:id", async (req, res) => {
 
 
          -------   PRIV GENRE STUFF  -------
+         Ben feature set
 
 
 */
@@ -318,6 +327,7 @@ app.delete("/priv_genre/:id", async (req, res) => {
 
 
          -------   PUBLIC TOPICS STUFF  -------
+         Dean feature set
 
 
 */
@@ -357,18 +367,6 @@ app.put("/genre/:id", async (req, res) => {
         const { name } = req.body;
         const updateGenre = await pool.query(`UPDATE "Genre" SET "Genre_Name" = $1 WHERE "Genre_ID" = $2`, [name, id]);
         res.json("genre was updated");
-    } catch (err) {
-        console.error(err.message);
-    }
-});
-
-//this is for edit functionality for user posts
-app.put("/posts/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { post_text } = req.body;
-        const updatePost = await pool.query(`UPDATE "Post" SET "Post_Text" = $1 WHERE "Post_ID" = $2`, [post_text, id]);
-        res.json("post was updated");
     } catch (err) {
         console.error(err.message);
     }
@@ -464,6 +462,7 @@ app.delete("/comment/:id", async (req, res) => {
 
 
          -------   Likes STUFF  -------
+         Ben feature set
 
 
 */
@@ -515,6 +514,7 @@ app.put("/dislike/:post_id", async (req, res) => {
 
 
          -------   Blacklist STUFF  -------
+         Jay feature set
 
 
 */
