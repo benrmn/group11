@@ -114,7 +114,13 @@ app.put("/user/:id", async (req, res) => {
     }
 });
 
-//create an announcement
+/*
+
+
+         -------   Announcement STUFF  -------
+
+
+*/
 app.post("/announcement", async (req, res) => {
     try {
         //const { id } = req.params;
@@ -127,6 +133,38 @@ app.post("/announcement", async (req, res) => {
         console.error(err.message);
     }
 });
+
+app.get("/announcement", async (req, res) => {
+    try {
+        const allAnnouncements = await pool.query(`SELECT * FROM "Announcement" `);
+        res.json(allAnnouncements.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete("/announcement/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteAnnouncement = await pool.query(`DELETE FROM "Announcement" WHERE "Announcement_ID" = $1`, [id]);
+        // delete view
+        res.json("announcement was deleted");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/announcement/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { announcements } = req.body;
+        const updateAnnouncement = await pool.query(`UPDATE "Announcement" SET "Announcement_Text" = $1 WHERE "Announcement_ID" = $2`, [announcements, id]);
+        res.json("announcement text was updated");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 
 
 /*
@@ -160,14 +198,7 @@ app.post("/posts/:id/:user_id", async (req, res) => {
     }
 });
 
-app.get("/announcement", async (req, res) => {
-    try {
-        const allAnnouncements = await pool.query(`SELECT * FROM "Announcement" `);
-        res.json(allAnnouncements.rows);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
+
 
 app.get("/posts", async(req, res) => {
     try {
@@ -182,11 +213,12 @@ app.get("/posts", async(req, res) => {
 });
 
 //get posts from user ID that is logged in
-app.get("/posts/:id", async(req, res) => {
+app.get("/posts/:user_id", async(req, res) => {
     try {
-        const { id } = req.params;
-        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
-        res.json(allPosts.rows);
+        const { user_id } = req.params;
+        console.log(localStorage().getItem("userinfo"));
+        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[user_id]);
+        res.json(allPosts.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
