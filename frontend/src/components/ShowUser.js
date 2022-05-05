@@ -62,7 +62,7 @@ import UpdateUser from "./UpdateUser";
 
 
 const User = () => {
-    const user = JSON.parse(localStorage.getItem("userinfo"))
+    const user = JSON.parse(localStorage.getItem("userinfo"));
     const navigate = useNavigate();
 
     //delete genre function

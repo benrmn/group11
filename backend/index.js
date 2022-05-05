@@ -200,25 +200,24 @@ app.post("/posts/:id/:user_id", async (req, res) => {
 
 
 
-app.get("/posts", async(req, res) => {
-    try {
+// app.get("/posts", async(req, res) => {
+//     try {
 
-        const id = req.query.id;
-        // console.log(id)
-        const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
-        res.json(allPosts.rows);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
+//         const id = req.query.id;
+//         // console.log(id)
+//         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[id]);
+//         res.json(allPosts.rows);
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
 
 //get posts from user ID that is logged in
 app.get("/posts/:user_id", async(req, res) => {
     try {
         const { user_id } = req.params;
-        console.log(localStorage().getItem("userinfo"));
         const allPosts = await pool.query(`SELECT * FROM "Post" WHERE "User_ID" = $1`,[user_id]);
-        res.json(allPosts.rows[0]);
+        res.json(allPosts.rows);
     } catch (err) {
         console.error(err.message);
     }
