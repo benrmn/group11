@@ -267,7 +267,13 @@ app.delete("/priv_genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
         // create tmp view query
-        const deleteComments = await pool.query(`DELETE FROM "Comment" WHERE "Post_ID" = (SELECT * FROM "Post" WHERE "Genre_ID" = $1)`, [id]);
+        const deleteComments = await pool.query(`DELETE FROM "Comment"
+        WHERE "Comment_ID" IN (
+            SELECT "Comment_ID" FROM(
+            SELECT "Comment_ID","Post_ID","Genre_ID" FROM "Comment"
+            LEFT JOIN "Post" Using("Post_ID")
+            WHERE "Genre_ID" = $1
+        ) AS R1)`, [id]);
         const deletePG_Posts = await pool.query(`DELETE FROM "Post" WHERE "Genre_ID" = $1`, [id]);
         const deleteP_Genre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         // delete view
@@ -340,7 +346,13 @@ app.put("/posts/:id", async (req, res) => {
 app.delete("/genre/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const deleteComments = await pool.query(`DELETE FROM "Comment" WHERE "Post_ID" = (SELECT * FROM "Post" WHERE "Genre_ID" = $1)`, [id]);
+        const deleteComments = await pool.query(`DELETE FROM "Comment"
+        WHERE "Comment_ID" IN (
+            SELECT "Comment_ID" FROM(
+            SELECT "Comment_ID","Post_ID","Genre_ID" FROM "Comment"
+            LEFT JOIN "Post" Using("Post_ID")
+            WHERE "Genre_ID" = $1
+        ) AS R1)`, [id]);
         const deleteG_Posts = await pool.query(`DELETE FROM "Post" WHERE "Genre_ID" = $1`, [id]);
         const deleteGenre = await pool.query(`DELETE FROM "Genre" WHERE "Genre_ID" = $1`, [id]);
         res.json("genre was deleted");
@@ -378,6 +390,17 @@ app.get("/comment/:id", async (req, res) => {
 
         const { id } = req.params;
         const allComments = await pool.query(`SELECT * FROM "Comment" WHERE "Post_ID" = $1`, [id]);
+        res.json(allComments.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/user_comment/:user_id", async (req, res) => {
+    try {
+
+        const { user_id } = req.params;
+        const allComments = await pool.query(`SELECT * FROM "Comment" WHERE "User_ID" = $1`, [user_id]);
         res.json(allComments.rows);
     } catch (err) {
         console.error(err.message);
@@ -423,15 +446,17 @@ app.delete("/comment/:id", async (req, res) => {
 //     }
 // });
 
-// app.get("/like/:post_id", async (req, res) => {
-//     try {
-//         const { post_id, user_id } = req.params;
-//         const newLike = await pool.query(`SELECT "Num_likes" FROM "Post" WHERE "Post_ID" = $1 AND "User_ID" = $2`, [post_id, user_id]);
-//         res.json(newLike.rows[0]);
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// });
+app.get("/leaderboard", async (req, res) => {
+    try {
+        const leaderboard = await pool.query
+            (`SELECT "Num_likes", "Username", "Post_Text", "isPrivate"
+            FROM "Post" 
+            FULL OUTER JOIN "Genre" USING ("Genre_ID") WHERE "isPrivate" = false ORDER BY "Num_likes" DESC`);
+        res.json(leaderboard.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 app.put("/like/:post_id", async (req, res) => {
     try {
@@ -450,6 +475,53 @@ app.put("/dislike/:post_id", async (req, res) => {
         const deleteLike = await pool.query(`UPDATE "Post" SET "Num_likes" = "Num_likes" - 1 WHERE "Post_ID" = $1`, [post_id]);
         res.json("Like was deleted");
 
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+/*
+
+
+         -------   Blacklist STUFF  -------
+
+
+*/
+app.get("/blacklist", async (req, res) => {
+    try {
+        const banUser = await pool.query(`SELECT "Username" FROM "User" WHERE "isBanned" = true`);
+        res.json(banUser.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/unblacklist", async (req, res) => {
+    try {
+        const unbanUser = await pool.query(`SELECT "Username" FROM "User" WHERE "isBanned" = false`);
+        res.json(unbanUser.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/blacklist/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+        const banUser = await pool.query(`UPDATE "User" SET "isBanned" = true WHERE "Username" = $1`, [username]);
+        res.json(banUser.rows[0]);
+        console.log("banned user");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/unblacklist/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+        const unbanUser = await pool.query(`UPDATE "User" SET "isBanned" = false WHERE "Username" = $1`, [username]);
+        res.json(unbanUser.rows[0]);
+        console.log("unbanned user");
     } catch (err) {
         console.error(err.message);
     }

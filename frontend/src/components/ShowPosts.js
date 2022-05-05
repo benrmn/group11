@@ -83,7 +83,7 @@ function ShowPosts() {
                                 <button onClick={() => unlikePost(Post.Genre_ID, Post.Post_ID)}>dislike</button>
                             </td>
                             <td>
-                                <UpdatePost Post={Post} />
+                                <UpdatePost Post={Post} x={true} />
                                 <button onClick={() => deletePost(Post.Post_ID)}>Delete</button>
                             </td>
                         </tr>

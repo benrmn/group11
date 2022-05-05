@@ -58,7 +58,7 @@ const ListC = () => {
                             <td>{comment.Comment_Text}</td>
                             <td>{comment.Username}</td>
                             <td>
-                                <UpdateC comment={comment} />
+                                <UpdateC comment={comment} x={true} />
                             </td>
                             <td>
                                 <button className="btn btn-danger" onClick={() => deleteComment(comment.Comment_ID)}>

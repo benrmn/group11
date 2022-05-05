@@ -57,7 +57,7 @@ function UserPosts () {
                         <tr>
                             <td>{Post.Post_Text}</td>
                             <td>
-                                <UpdatePost Post={Post} />
+                                <UpdatePost Post={Post} x={false} />
                                 <button onClick={() => deletePost(Post.Post_ID)}>Delete</button>
                             </td>
                         </tr>
