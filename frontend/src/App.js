@@ -16,6 +16,7 @@ import ListC from './components/ListC';
 
 import Announcement from './components/Announcement';
 import ListA from './components/ListA';
+import UpdateA from './components/UpdateA';
 
 import Register from './components/register';
 import ShowUser from './components/ShowUser';

@@ -27,6 +27,8 @@ function UserPosts () {
             const response = await fetch("http://localhost:5000/posts?id=1");
             const jsonData = await response.json(); //parse data
 
+            console.log(localStorage().getItem("userinfo"));
+
             setPosts(jsonData); //changing state
             console.log(jsonData)
         } catch(err) {

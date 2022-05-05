@@ -3,9 +3,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useParams } from "react-router-dom";
-import ListC from './ListC'
-import UpdatePost from "./UpdatePost";
 
+import UpdateA from "./UpdateA";
 
 
 function ListA() {
@@ -14,8 +13,6 @@ function ListA() {
     //console.log(id);
     const getAnnouncements = async() => {
         try {
-            // the fetch will need to be (`http://localhost:5000/genre_posts/${genre.Genre_ID}`); once we have its own page setup
-            // i still need to find a way to give a genre id its own page
             
             const response = await fetch(`http://localhost:5000/announcement`);
             const jsonData = await response.json(); //parse data
@@ -26,18 +23,18 @@ function ListA() {
             console.error(err.message)
         }
     }
-    // const deletePost = async (id) => {
-    //     try {
-    //         const deletePost = await fetch(`http://localhost:5000/posts/${id}`, {
-    //             method: "DELETE"
+    const deleteAnnouncement = async (id) => {
+        try {
+            const deleteAnnouncement = await fetch(`http://localhost:5000/announcement/${id}`, {
+                method: "DELETE"
 
-    //         });
-    //         //only display posts that fit filter condition
-    //         setAnnouncements(posts.filter(Post => Post.Post_ID !== id))
-    //     } catch (err) {
-    //         console.error(err.message)
-    //     }
-    // }
+            });
+
+            setAnnouncements(announcements.filter(Announcement => Announcement.Announcement_ID !== id))
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
 
     useEffect(() => {
         getAnnouncements();
@@ -53,6 +50,8 @@ function ListA() {
                         <>
                             <hr></hr>
                             <h1 key={Announcement.Announcement_ID}>{Announcement.Announcement_Text} </h1>
+                            <UpdateA Announcement={Announcement} />
+                            <button onClick={() => deleteAnnouncement(Announcement.Announcement_ID)}>Delete</button> 
                         </>
                     )}
                 </div>
