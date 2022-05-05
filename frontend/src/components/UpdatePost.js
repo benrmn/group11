@@ -3,7 +3,7 @@
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 
-const UpdatePost = ({ Post }) => {
+const UpdatePost = ({ Post, x }) => {
 
     const [post_text, setPost_Text] = useState(Post.Post_Text)
     const [show, setShow] = useState(false);
@@ -25,6 +25,11 @@ const UpdatePost = ({ Post }) => {
             } );
             //refresh screen to see new change
             window.location = `/genre_posts/${Post.Genre_ID}`;
+            if (x === true) {
+                window.location = `/genre_posts/${Post.Genre_ID}`;
+            } else {
+                window.location = `/user_posts`;
+            }
         } catch (err) {
             console.error(err.message)
         }

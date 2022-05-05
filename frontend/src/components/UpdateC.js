@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 
-const UpdateC = ({ comment }) => {
+const UpdateC = ({ comment, x }) => {
+    //console.log(comment);
     const [text, setText] = useState(comment.Comment_Text);
     const [show, setShow] = useState(false);
 
@@ -22,8 +23,12 @@ const UpdateC = ({ comment }) => {
                     body: JSON.stringify(body)
                 }
             );
-
+            //console.log(x);
+            if (x === true) {
             window.location = `/comment/${comment.Post_ID}`;
+            } else {
+                window.location = `/user_comments`;
+            }
         } catch (err) {
             console.error(err.message);
         }

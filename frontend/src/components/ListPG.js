@@ -6,7 +6,6 @@ import UpdatePG from "./UpdatePG";
 
 const ListPG = () => {
     const [pgenres, setPGenres] = useState([]);
-
     //delete pgenre function
 
     const deletePGenre = async id => {
@@ -41,7 +40,7 @@ const ListPG = () => {
     return (
         <Fragment>
             {" "}
-            <table class="table mt-5 text-center">
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
                     <tr>
                         <th>Title pgenres</th>

@@ -7,7 +7,7 @@ const AddPG = () => {
         e.preventDefault();
         try {
             const body = { name };
-            const response = await fetch("http://localhost:5000/priv_genre", {
+            const response = await fetch(`http://localhost:5000/priv_genre`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)

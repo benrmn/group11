@@ -37,13 +37,17 @@ const ListC = () => {
 
     console.log(comments);
 
+    const user = JSON.parse(localStorage.getItem("userinfo"))
+
+    if (user.isAdmin) {
     return (
         <Fragment>
             {" "}
-            <table class="table mt-5 text-center">
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
                     <tr>
-                        <th>Text</th>
+                        <th>Comments</th>
+                        <th>Author</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -52,8 +56,9 @@ const ListC = () => {
                     {comments.map(comment => (
                         <tr key={comment.Comment_ID}>
                             <td>{comment.Comment_Text}</td>
+                            <td>{comment.Username}</td>
                             <td>
-                                <UpdateC comment={comment} />
+                                <UpdateC comment={comment} x={true} />
                             </td>
                             <td>
                                 <button className="btn btn-danger" onClick={() => deleteComment(comment.Comment_ID)}>
@@ -66,6 +71,27 @@ const ListC = () => {
             </table>
         </Fragment>
     );
+    } else {
+        <Fragment>
+            {" "}
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
+                <thead>
+                    <tr>
+                        <th>Comments</th>
+                        <th>Author</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {comments.map(comment => (
+                        <tr key={comment.Comment_ID}>
+                            <td>{comment.Comment_Text}</td>
+                            <td>{comment.Username}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </Fragment>
+    }
 };
 
 export default ListC;

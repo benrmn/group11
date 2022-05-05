@@ -39,10 +39,13 @@ const ListG = () => {
 
     console.log(genres);
 
+    const user = JSON.parse(localStorage.getItem("userinfo"))
+
+    if (user.isAdmin) {
     return (
         <Fragment>
             {" "}
-            <table class="table mt-5 text-center">
+            <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -68,6 +71,27 @@ const ListG = () => {
             </table>
         </Fragment>
     );
+    } else {
+        return (
+            <Fragment>
+                {" "}
+                <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {genres.map(genre => (
+                            <tr key={genre.Genre_ID}>
+                                <td><Link to={`/genre_posts/${genre.Genre_ID}`} element={<ShowPosts />}>{genre.Genre_Name}</Link></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </Fragment>
+        );
+    }
 };
 
 export default ListG;
