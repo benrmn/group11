@@ -1,4 +1,5 @@
 //Kiara Berry coded this file
+//ShowPosts and UserPosts go here when editing a post
 
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
@@ -36,6 +37,7 @@ const UpdatePost = ({ Post, x }) => {
     }
 
     return (
+        //text box popup for editing a post and saving changes 
         <Fragment>
             <>
                 <Button variant="primary" onClick={handleShow} data-bs-target={`#id${Post.Post_ID}`}>

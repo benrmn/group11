@@ -9,7 +9,7 @@ function Announcement() {
     const [text, setPost] = useState("");
     const { id } = useParams();
 
-    //function after clicking submit button for post
+    //function after clicking submit button for announcement
     const onSubmitForm = async(e) => {
         e.preventDefault();
         try {
@@ -20,20 +20,15 @@ function Announcement() {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)});
 
-            //redirect to home page after submitting
+            //redirect to home page after submitting announcement
             window.location = `/`;
         } catch(err) {
             console.error(err.message);
         }
     }
     return (  
+        // text form for announcement 
         <>
-            <div className="input-group input-group-sm mb-3">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Title</span>
-                {/* ayo wtf is this for theres no title lmao */}
-            <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></input>
-            </div>
-
             <div className="input-group">
             <span className="input-group-text" id="inputGroup-sizing-lg">Body</span>
             <textarea className="form-control" aria-label="With textarea" value={text} onChange={e => setPost(e.target.value)}></textarea>

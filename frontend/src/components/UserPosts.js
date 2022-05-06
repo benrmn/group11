@@ -1,4 +1,5 @@
 //Kiara Berry coded this file
+//user can view "my posts" on home page
 
 import React, { Component, Fragment, useEffect, useState } from "react";
 import UpdatePost from "./UpdatePost";
