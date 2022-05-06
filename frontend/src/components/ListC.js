@@ -81,6 +81,7 @@ const ListC = () => {
         </Fragment>
     );
     } else {
+        return(
         <Fragment>
             {" "}
             <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
@@ -100,6 +101,7 @@ const ListC = () => {
                 </tbody>
             </table>
         </Fragment>
+        );
     }
 };
 
