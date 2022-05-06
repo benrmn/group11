@@ -2,6 +2,12 @@
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 
+/*
+This is the page that allows users to
+edit all of their user information
+by providing a popup
+*/
+
 const UpdateUser = ({ user, field, current }) => {
     
 
@@ -17,6 +23,9 @@ const UpdateUser = ({ user, field, current }) => {
         return('');
     }
 
+    // depending on the field this query lets the user edit a variety of attributes
+    // if the attribute is changed the current users logged in information
+    // is changed on local storage as well.
     const updateName = async e => {
         e.preventDefault();
         try {
@@ -30,6 +39,8 @@ const UpdateUser = ({ user, field, current }) => {
                 }
             );
             
+            // depending on the field changes the users info
+            // thats on local storage
             if(field==="User_Fname"){
                 user.User_Fname = name
             }
@@ -48,6 +59,8 @@ const UpdateUser = ({ user, field, current }) => {
     };
 
     return (
+        // pop up window that shows the user what they are
+        // currently editing
         <Fragment>
             <>
                 <Button variant="primary" onClick={handleShow} data-bs-target={`#id${user.User_ID}`}>

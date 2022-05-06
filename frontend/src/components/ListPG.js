@@ -5,10 +5,19 @@ import ShowPosts from "./ShowPosts";
 
 import UpdatePG from "./UpdatePG";
 
+/*
+This page allows the admins to see the list of
+private genres they can browse and lets them
+add or remove private genres
+*/
+
 const ListPG = () => {
     const [pgenres, setPGenres] = useState([]);
 
     // pass a specific private genre_id to delete from db
+    // delete genre function
+    // if the genre is deleted, the posts in the genre are also
+    // deleted and so are all the comments on each of the posts
     const deletePGenre = async id => {
         try {
             const deletePGenre = await fetch(`http://localhost:5000/priv_genre/${id}`, {
@@ -42,6 +51,7 @@ const ListPG = () => {
     console.log(pgenres);
 
     return (
+        // display html page with list of private genres
         <Fragment>
             {" "}
             <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>

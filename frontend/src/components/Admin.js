@@ -1,34 +1,35 @@
-//Jay, Dean, and Ben worked on this file
+//Dean worked on this file
 import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 /*
-This page shows the list of banned users
-and allows admins to ban or
-unban other users
+This page shows the list of admins
+and allows admins to add and remove
+other admin users
 */
 
-const Banned = () => {
+
+const Admin = () => {
     const [users, setUsers] = useState([]);
     const [usersb, setUsersb] = useState([]);
     const navigate = useNavigate();
 
-    // get list of users that are not banned 
+    // get list of users that are not admins 
     const getUsers = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/unblacklist`);
+            const response = await fetch(`http://localhost:5000/unadmin`);
             const jsonData = await response.json();
-
+            console.log(jsonData)
             setUsers(jsonData);
         } catch (err) {
             console.error(err.message);
         }
     };
 
-    // get list of users that are banned 
+    // get list of users that are admins
     const getUsersb = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/blacklist`);
+            const response = await fetch(`http://localhost:5000/admin`);
             const jsonData = await response.json();
 
             setUsersb(jsonData);
@@ -37,25 +38,25 @@ const Banned = () => {
         }
     };
 
-    // set a user as banned
-    const banUser = async id => {
+    // set a user as an admin
+    const adminUser = async id => {
         try {
-            const banUsr = await fetch(`http://localhost:5000/blacklist/${id}`, {
+            const adminUsr = await fetch(`http://localhost:5000/admin/${id}`, {
                 method: "PUT"
             });
-            window.location = "/bans";
+            window.location = "/admins";
         } catch (err) {
             console.error(err.message);
         }
     };
 
-    // set a user as not banned
-    const unbanUser = async id => {
+    // set a user as not an admin
+    const unadminUser = async id => {
         try {
-            const unbanUsr = await fetch(`http://localhost:5000/unblacklist/${id}`, {
+            const unadminUsr = await fetch(`http://localhost:5000/unadmin/${id}`, {
                 method: "PUT"
             });
-            window.location = "/bans";
+            window.location = "/admins";
         } catch (err) {
             console.error(err.message);
         }
@@ -67,14 +68,14 @@ const Banned = () => {
     }, []);
 
     return (
-        // display html page that shows the banned users
+        // display the html page that lists all users and allows to admin
         <Fragment>
             {" "}
             <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
                     <tr>
-                        <th>Banned Users</th>
-                        <th>Unban</th>
+                        <th>Admin Users</th>
+                        <th>Unadmin</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,7 +84,7 @@ const Banned = () => {
                             <td>
                                 {user.Username}
                             </td>
-                            <td><button onClick={function () { unbanUser(user.Username); navigate("/bans") }}>unban</button></td>
+                            <td><button onClick={function () { unadminUser(user.Username); navigate("/admins") }}>unadmin</button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -92,7 +93,7 @@ const Banned = () => {
                 <thead>
                     <tr>
                         <th>Users</th>
-                        <th>Ban</th>
+                        <th>Admin</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,7 +102,7 @@ const Banned = () => {
                             <td>
                                 {user.Username}
                             </td>
-                            <td><button onClick={function () { banUser(user.Username); navigate("/bans") }}>ban</button></td>
+                            <td><button onClick={function () { adminUser(user.Username); navigate("/admins") }}>admin</button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -110,4 +111,4 @@ const Banned = () => {
     );
 };
 
-export default Banned;
+export default Admin;

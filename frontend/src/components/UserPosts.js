@@ -2,9 +2,13 @@
 //user can view "my posts" on home page
 
 import React, { Component, Fragment, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, renderMatches } from 'react-router-dom';
-import { useParams } from "react-router-dom";
 import UpdatePost from "./UpdatePost";
+
+/*
+This page allows user to view and edit their
+posts theyve made on any topic.
+It also allow them to delete the post.
+*/
 
 function UserPosts () {
     
@@ -24,6 +28,7 @@ function UserPosts () {
         }
     }
 
+    // get the list of posts from a user id
     const getPosts = async () => {
         const user = JSON.parse(localStorage.getItem("userinfo"))
         try {
@@ -45,6 +50,7 @@ function UserPosts () {
     // console.log(posts)
 
     return (
+        // display html table that shows the users posts
         <Fragment>
             <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>
@@ -67,7 +73,6 @@ function UserPosts () {
             </table>
 
         </Fragment>
-
     );
 }
 
