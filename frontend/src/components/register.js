@@ -2,6 +2,11 @@
 import React, { Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
+/*
+This page allows
+a new user to register on the website
+*/
+
 const Register = () => {
     const [inputs, setInputs] = useState({
         fname: "",
@@ -30,7 +35,7 @@ const Register = () => {
                 }
             );
             const parseRes = await response.json();
-            
+            // reroute the user to the login page so they can login
             window.location = '/login';
         } catch (err) {
             console.error(err.message);
@@ -38,6 +43,7 @@ const Register = () => {
     };
 
     return (
+        // display the html page with reigstration information
         <Fragment>
             <h1 className="mt-5 text-center">Register</h1>
             <form onSubmit={onSubmitForm}>

@@ -9,6 +9,7 @@ const FindLogin = () => {
     const Login = async e => {
         e.preventDefault();
         try {
+            // request login information query
             const body = { username, password };
             const response = await fetch("http://localhost:5000/login", {
                 method: "POST",
@@ -18,6 +19,7 @@ const FindLogin = () => {
             const jsonData = await response.json();
             console.log(jsonData);
 
+            // only allow the user to log in if theyre not banned
             if(jsonData.isBanned)
             {
                 alert("You are banned!");
@@ -26,7 +28,7 @@ const FindLogin = () => {
             {
                 localStorage.setItem('loginattempt', JSON.stringify(body))
                 localStorage.setItem('userinfo',JSON.stringify(jsonData))
-
+                // reroute user to home page
                 window.location = '/';
             }
             
@@ -35,7 +37,10 @@ const FindLogin = () => {
             console.error(err.message);
         }
     };
+
+
     return (
+        // html page that will show the user login fields
         <Fragment>
             <h1 className="text-center mt-5">Login</h1>
             <form onSubmit={Login}>

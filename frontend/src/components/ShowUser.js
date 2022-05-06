@@ -1,26 +1,25 @@
 // Dean worked on this file
-import React, { Fragment, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { Fragment } from "react";
 import {useNavigate } from 'react-router-dom';
-
-import ShowPosts from "./ShowPosts";
-
 import UpdateUser from "./UpdateUser";
 
-
+/*
+This page shows the user fields
+which they are allowed to edit
+*/
 
 const User = () => {
     const user = JSON.parse(localStorage.getItem("userinfo"));
     const navigate = useNavigate();
 
-    //delete genre function
-
+    //delete user given an id
     const deleteUser = async id => {
         try {
             const deleteUser = await fetch(`http://localhost:5000/user/${id}`, {
                 method: "DELETE"
             });
             
+            // log out the user and return them to the home page
             localStorage.removeItem("userinfo");
             navigate("/");
 
@@ -30,6 +29,7 @@ const User = () => {
     };
 
     return (
+        // show the user fields they can edit
         <Fragment>
             {" "}
             <table class="table mt-5 text-center" style={{color:"#ffffff"}}>

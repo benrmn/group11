@@ -1,10 +1,17 @@
 //Ben and Dean worked on this file
 import React, { Fragment, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
+/*
+This page shows the list of
+most liked posts that are in
+public topics
+*/
 
 const Leaderboard = () => {
     const [leads, setLeaderboard] = useState([]);
 
+    // query the database for list of topics in public genres
+    // ordered by the number of likes
     const getLeaderboard = async () => {
         try {
             const response = await fetch("http://localhost:5000/leaderboard");
@@ -22,6 +29,7 @@ const Leaderboard = () => {
 
 
     return (
+        // display page that shows the post title, creator, and number of likes
         <Fragment>
             {" "}
             <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>

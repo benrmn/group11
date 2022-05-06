@@ -62,7 +62,7 @@ app.post("/register", async (req, res) => {
 
         // enter user user to db
         const newUser = await pool.query(`INSERT INTO "User" ("User_Fname", "User_Lname", "Username", "Password", "isBanned", "isAdmin") 
-            VALUES ($1, $2, $3, $4, false, true) RETURNING *`, [fname, lname, uname, pass]);
+            VALUES ($1, $2, $3, $4, false, false) RETURNING *`, [fname, lname, uname, pass]);
 
         res.json(newUser.rows[0])
 
@@ -552,6 +552,54 @@ app.put("/unblacklist/:username", async (req, res) => {
         const { username } = req.params;
         const unbanUser = await pool.query(`UPDATE "User" SET "isBanned" = false WHERE "Username" = $1`, [username]);
         res.json(unbanUser.rows[0]);
+        console.log("unbanned user");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+/*
+
+
+         -------   Admin STUFF  -------
+         Jay feature set
+
+
+*/
+app.get("/admin", async (req, res) => {
+    try {
+        const adminUser = await pool.query(`SELECT "Username" FROM "User" WHERE "isAdmin" = true`);
+        res.json(adminUser.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get("/unadmin", async (req, res) => {
+    try {
+        const unadminUser = await pool.query(`SELECT "Username" FROM "User" WHERE "isAdmin" = false`);
+        res.json(unadminUser.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/admin/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+        const adminUser = await pool.query(`UPDATE "User" SET "isAdmin" = true WHERE "Username" = $1`, [username]);
+        res.json(adminUser.rows[0]);
+        console.log("banned user");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/unadmin/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+        const unadminUser = await pool.query(`UPDATE "User" SET "isAdmin" = false WHERE "Username" = $1`, [username]);
+        res.json(unadminUser.rows[0]);
         console.log("unbanned user");
     } catch (err) {
         console.error(err.message);

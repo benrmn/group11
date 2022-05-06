@@ -18,6 +18,7 @@ import ListG from './components/ListG';
 import AddC from './components/AddC';
 import ListC from './components/ListC';
 import Banned from './components/Banned';
+import Admin from './components/Admin';
 import Leaderboard from './components/Leaderboard';
 
 
@@ -49,6 +50,7 @@ function App() {
             <Route path="/user_comments" element={<UserComments />} />
             <Route path="/lleaderboard" element={<Leaderboard />} />
             <Route path="/bans" element={<Banned />} />
+            <Route path="/admins" element={<Admin />} />
             <Route path="/genre_posts/:id" element={<><Post /><ShowPosts /></>} />
             <Route path="/comment/:id" element={<><AddC /><ListC /></>} />
             <Route path="/genre" element={<><AddG /><ListG /></>} />
