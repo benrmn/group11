@@ -69,6 +69,7 @@ function ShowPosts() {
                     <tr>
                         <th>Posts</th>
                         <th>Author</th>
+                        <th>Num Likes</th>
                         <th>Like / Dislike</th>
                         <th>Edit / Delete</th>
                     </tr>
@@ -78,6 +79,7 @@ function ShowPosts() {
                         <tr key={Post.Post_ID}>
                             <td><Link to={`/comment/${Post.Post_ID}`} element={<ListC />}>{Post.Post_Text}</Link></td>
                             <td>{Post.Username}</td>
+                            <td>{Post.Num_likes}</td>
                             <td>
                                 <button onClick={() => likePost(Post.Genre_ID, Post.Post_ID)}>Like</button>
                                 <button onClick={() => unlikePost(Post.Genre_ID, Post.Post_ID)}>dislike</button>

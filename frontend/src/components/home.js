@@ -5,13 +5,15 @@ import ListA from './ListA';
 import Post from './post';
 
 
-
+// home page (what is first shown)
 function Home() {
 
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("userinfo"))
 
+    // check if user is logged in
     if ("userinfo" in localStorage){
+        // if user is logged in, check if admin
         if (user.isAdmin == true) {
         return (
             <>
@@ -37,7 +39,7 @@ function Home() {
             </>
 
         );
-        } else {
+        } else { // not admin
             return (
                 <>
                     Hello, {user.User_Fname}
@@ -56,7 +58,7 @@ function Home() {
                 </>
             );
         }
-    } else {
+    } else { // not logged in
         return (
             <>
 

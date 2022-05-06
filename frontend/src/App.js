@@ -1,4 +1,6 @@
 // Jay, Kiara, Dean, and Ben all worked on this file
+
+// this file includes all of our imports for each component, as well as all routes that could be used in the app
 import './App.css';
 import React, { Fragment } from "react";
 import Nav from './components/nav';

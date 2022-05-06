@@ -9,8 +9,7 @@ const UpdatePG = ({ pgenre }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-  //edit description function
-
+    // pass a specific id to update a topic
     const updateName = async e => {
         e.preventDefault();
         try {
@@ -30,6 +29,7 @@ const UpdatePG = ({ pgenre }) => {
         }
     };
 
+    // modal (pop out) to enter a new text/edit the existing topic
     return (
         <Fragment>
             <>

@@ -7,25 +7,28 @@ import UpdatePG from "./UpdatePG";
 
 const ListPG = () => {
     const [pgenres, setPGenres] = useState([]);
-    //delete pgenre function
 
+    // pass a specific private genre_id to delete from db
     const deletePGenre = async id => {
         try {
             const deletePGenre = await fetch(`http://localhost:5000/priv_genre/${id}`, {
                 method: "DELETE"
             });
 
+            // we want to filter out any private genre that does not have the id that has been deleted for rerender
             setPGenres(pgenres.filter(pgenre => pgenre.Genre_ID !== id));
         } catch (err) {
             console.error(err.message);
         }
     };
 
+    // get all private genres to list
     const getPGenre = async () => {
         try {
             const response = await fetch("http://localhost:5000/priv_genre");
             const jsonData = await response.json();
 
+            // set our list of pgenres
             setPGenres(jsonData);
         } catch (err) {
             console.error(err.message);

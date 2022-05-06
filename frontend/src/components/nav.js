@@ -1,6 +1,4 @@
 //Kiara Berry coded this file
-
-// Dean, Kiara, Jay, and Ben all worked on this file
 import React from 'react';
 import {useNavigate } from 'react-router-dom';
 import Post from './post';
