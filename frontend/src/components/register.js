@@ -20,6 +20,7 @@ const Register = () => {
     const onChange = e =>
         setInputs({ ...inputs, [e.target.name]: e.target.value });
 
+    // this function creates a new user
     const onSubmitForm = async e => {
         e.preventDefault();
         try {

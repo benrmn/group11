@@ -2,6 +2,14 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
+/*
+This page is to allow a user to login if they already
+have an account on the website. This just looks up if there
+is a match of the username and password provided and saves
+the information to the local storage to be used on other aspects
+of the website
+*/
+
 const FindLogin = () => {
     const [username, setUsername] = useState([]);
     const [password, setPassword] = useState([]);

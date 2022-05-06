@@ -2,6 +2,12 @@
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 
+/*
+This page is to produce a pop up window
+to allow a user to edit their comment text
+or to allow an admin to edit someones comment text
+*/
+
 const UpdateC = ({ comment, x }) => {
     //console.log(comment);
     const [text, setText] = useState(comment.Comment_Text);
@@ -10,8 +16,7 @@ const UpdateC = ({ comment, x }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    //edit description function
-
+    //edit comment text function
     const updateText = async e => {
         e.preventDefault();
         try {
@@ -24,9 +29,10 @@ const UpdateC = ({ comment, x }) => {
                     body: JSON.stringify(body)
                 }
             );
-            //console.log(x);
+            // comments can be edited in 2 places, so we have a boolean value we use
+            // to ensure that the user is redirected to the same page theyre already on
             if (x === true) {
-            window.location = `/comment/${comment.Post_ID}`;
+                window.location = `/comment/${comment.Post_ID}`;
             } else {
                 window.location = `/user_comments`;
             }
@@ -36,6 +42,7 @@ const UpdateC = ({ comment, x }) => {
     };
 
     return (
+        // display edit pop up window
         <Fragment>
             <>
                 <Button variant="primary" onClick={handleShow} data-bs-target={`#id${comment.Comment_ID}`}>

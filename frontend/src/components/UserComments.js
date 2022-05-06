@@ -1,28 +1,33 @@
 //Dean and Ben coded this file
 
 import React, { Component, Fragment, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, renderMatches } from 'react-router-dom';
-import { useParams } from "react-router-dom";
 import UpdateC from "./UpdateC";
+
+/*
+This page allows user to view and edit their
+comments theyve made on any topic and post.
+It also allow them to delete the comment.
+*/
 
 function UserComments() {
 
     const [comments, setComment] = useState([]);
 
-    //delete function for post
+    //delete function for commet
     const deleteComment = async (id) => {
         try {
             const deleteComment = await fetch(`http://localhost:5000/comment/${id}`,
                 {
                     method: "DELETE"
                 });
-            //only display posts that fit filter condition
+            //only display comment that fit filter condition
             setComment(comments.filter(Comment => Comment.Comment_ID !== id))
         } catch (err) {
             console.error(err.message)
         }
     }
 
+    // get the list of comments from a user id
     const getComment = async () => {
         const user = JSON.parse(localStorage.getItem("userinfo"));
         try {
@@ -37,13 +42,13 @@ function UserComments() {
         }
     }
 
-
     useEffect(() => {
         getComment();
     }, []); //ensure we only make one request
     // console.log(posts)
 
     return (
+        // display an html table that shows the users comments
         <Fragment>
             <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>

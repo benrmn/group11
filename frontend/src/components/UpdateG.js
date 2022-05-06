@@ -2,6 +2,11 @@
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 
+/*
+This page is to produce a pop up window
+to allow an admin to edit a genres name
+*/
+
 const UpdateG = ({ genre }) => {
     const [name, setName] = useState(genre.Genre_Name);
     const [show, setShow] = useState(false);
@@ -9,8 +14,7 @@ const UpdateG = ({ genre }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    //edit description function
-
+    //edit genre name function
     const updateName = async e => {
         e.preventDefault();
         try {
@@ -23,7 +27,7 @@ const UpdateG = ({ genre }) => {
                     body: JSON.stringify(body)
                 }
             );
-
+            // reroute the user to the genre page so the updates load
             window.location = "/genre";
         } catch (err) {
             console.error(err.message);
@@ -31,6 +35,7 @@ const UpdateG = ({ genre }) => {
     };
 
     return (
+        // show drop down that lets the user change the genre name
         <Fragment>
             <>
                 <Button variant="primary" onClick={handleShow} data-bs-target={`#id${genre.Genre_ID}`}>
