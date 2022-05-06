@@ -34,9 +34,10 @@ pool.connect(function(err) {
 
 
          -------   LOGIN STUFF  -------
-
+        Dean Anderson
 
 */
+
 
 app.post("/login", async (req, res) => {
     try {
@@ -116,7 +117,7 @@ app.put("/user/:id", async (req, res) => {
 
 
          -------   Announcement STUFF  -------
-
+        Kiara Berry
 
 */
 app.post("/announcement", async (req, res) => {
@@ -402,6 +403,14 @@ app.delete("/posts/:id", async (req, res) => {
 });
 
 // comments under a post id
+/*
+
+
+         -------   Comments STUFF  -------
+         Jay feature set
+
+
+*/
 app.post("/comment/:id/:user_id", async (req, res) => {
     try {
         const { id, user_id } = req.params;
