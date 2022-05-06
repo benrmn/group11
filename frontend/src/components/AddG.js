@@ -1,6 +1,9 @@
 //Ben and Dean worked on this file
 import React, { Fragment, useState } from "react";
 
+/*
+This file allows an admin to add a new genre
+*/
 const AddG = () => {
     const [name, setName] = useState("");
 

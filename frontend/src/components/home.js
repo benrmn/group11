@@ -28,6 +28,8 @@ function Home() {
                 <br></br>
                 <button type="button" className="btn btn-primary" onClick={() => navigate("/bans")}>Blacklist</button>
                 <br></br>
+                <button type="button" className="btn btn-primary" onClick={() => navigate("/admins")}>Admin List</button>
+                <br></br>
                 <button type="button" className="btn btn-primary" onClick={() => navigate("/user")}>Account Settings</button>
                 <br></br>
                 <button type="button" className="btn btn-primary" onClick={() => navigate("/genre")}>Genre's</button>

@@ -3,14 +3,20 @@ import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import ShowPosts from "./ShowPosts";
-
 import UpdateG from "./UpdateG";
+
+/*
+This page allows the users to see the list of
+genres they can browse and lets admins
+add or remove them
+*/
 
 const ListG = () => {
     const [genres, setGenres] = useState([]);
 
-    //delete genre function
-
+    // delete genre function
+    // if the genre is deleted, the posts in the genre are also
+    // deleted and so are all the comments on each of the posts
     const deleteGenre = async id => {
         try {
             const deleteGenre = await fetch(`http://localhost:5000/genre/${id}`, {
@@ -23,6 +29,7 @@ const ListG = () => {
         }
     };
 
+    // get list of genres from database
     const getGenre = async () => {
         try {
             const response = await fetch("http://localhost:5000/genre");
@@ -39,9 +46,9 @@ const ListG = () => {
     }, []);
 
     console.log(genres);
-
     const user = JSON.parse(localStorage.getItem("userinfo"))
 
+    // display a different page based on if the user is an admin or not
     if (user.isAdmin) {
     return (
         <Fragment>
