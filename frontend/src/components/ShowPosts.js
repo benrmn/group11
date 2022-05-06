@@ -1,5 +1,8 @@
 //Kiara Berry coded this file
 
+//displays posts under specific genre selected - with likes and can view comments when post is clicked
+//can also edit and delete posts
+
 import React, { Component, Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, renderMatches } from 'react-router-dom';
 import { useParams } from "react-router-dom";
@@ -63,6 +66,7 @@ function ShowPosts() {
 
     if (user.isAdmin) {
     return (
+        //only admin can see likes of post and edit/delete them
         <Fragment>
             <table class="table mt-5 text-center" style={{ color: "#ffffff" }}>
                 <thead>

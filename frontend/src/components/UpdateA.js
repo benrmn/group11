@@ -1,4 +1,5 @@
 //Kiara Berry coded this file
+//listA uses this file for the ability to edit an announcement
 
 import React, { Fragment, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
@@ -11,7 +12,7 @@ const UpdateA = ({ Announcement }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    //edit post text function
+    //edit announcement text function
     const updateAnnouncement = async(e) => {
         //don't want to refresh yet
         e.preventDefault();
@@ -31,6 +32,7 @@ const UpdateA = ({ Announcement }) => {
     }
 
     return (
+        //text feature pop up for editing announcement and then saving changes
         <Fragment>
             <>
                 <Button variant="primary" onClick={handleShow} data-bs-target={`#id${Announcement.Announcement_ID}`}>

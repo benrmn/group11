@@ -1,4 +1,5 @@
 //Kiara Berry coded this file
+//user can view "my posts" on home page
 
 import React, { Component, Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, renderMatches } from 'react-router-dom';
@@ -66,22 +67,6 @@ function UserPosts () {
             </table>
 
         </Fragment>
-        // <div className="container">
-        //     <div className="row">
-        //     {/* <span className="border border-2"></span> */}
-        //         <div className="col">
-        //             {posts.map(Post =>  (
-        //                 <>
-        //                     <hr>test</hr>
-        //                     <h1 key={Post.Post_ID}>{Post.Post_Text} </h1>
-        //                     <UpdatePost Post = {Post} />
-        //                     <button onClick={() => deletePost(Post.Post_ID)}>Delete</button> 
-
-        //                 </>
-        //             ))}
-        //         </div>
-        //     </div>
-        // </div>
 
     );
 }

@@ -27,12 +27,8 @@ function Post() {
         }
     }
     return (  
+        //text box for creating a post
         <>
-            <div className="input-group input-group-sm mb-3">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Title</span>
-                {/* ayo wtf is this for theres no title lmao */}
-            <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></input>
-            </div>
 
             <div className="input-group">
             <span className="input-group-text" id="inputGroup-sizing-lg">Body</span>

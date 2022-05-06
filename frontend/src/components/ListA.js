@@ -1,4 +1,5 @@
 //Kiara Berry coded this file
+//Lists all announcements on home page - each with an edit and delete button
 
 import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -43,6 +44,7 @@ function ListA() {
     }, []); //ensure we only make one request
     // console.log(posts)
 
+    //announcements can only have edit and delete option if user logged in is admin
     if ("userinfo" in localStorage) {
         if (user.isAdmin) {
             return (
@@ -64,6 +66,7 @@ function ListA() {
 
             );
         } else {
+            //if user is not an admin will only view announcements without edit and delete
             return (
                 <div className="container">
                     <div className="row">

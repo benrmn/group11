@@ -12,6 +12,7 @@ function Navbar() {
 
 
     if ("userinfo" in localStorage) {
+        //only user that is admin can see 'create announcement' button
         if (user.isAdmin) {
             return (
                 <>
@@ -46,6 +47,7 @@ function Navbar() {
             );
 
         } else {
+            //if not admin then cannot create announcement
             return (
                 <>
                     <nav className="navbar fixed-top navbar-expand-lg navbar-light" style={{ backgroundColor: "#E8E6D9" }}>
